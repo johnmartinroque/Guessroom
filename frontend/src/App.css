@@ -249,14 +249,33 @@ body {
   width: 100%;
   box-sizing: border-box;
 }
-
 .chat-container {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   max-width: 400px;
   min-width: 250px;
   background-color: rgba(48, 48, 48, 0.2);
   padding: 1.2rem;
   border-radius: 0.3rem;
-  overflow-y: hidden;
+  overflow: hidden;
+  height: 95vh;
   box-sizing: border-box;
+}
+
+.chat-box {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-input-area {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.chat-input-area input {
+  flex: 1;
 }
