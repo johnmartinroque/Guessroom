@@ -190,7 +190,7 @@ io.on("connection", (socket) => {
     });
   }
 
-  const MAX_ROUNDS = 7;
+  const MAX_ROUNDS = 9;
 
   function nextRound(lobbyName) {
     if (!lobbies[lobbyName]) return;

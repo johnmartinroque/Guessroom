@@ -40,5 +40,17 @@
     "title": "Not Like Us",
     "artist": "Kendrick Lamar",
     "albumArt": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQftzsgWAQcDjAWY7GSVJgyjttELdiR6NLQ9A&s"
+  },
+  {
+    "filename": "song8.mp3",
+    "title": "Tough Luck",
+    "artist": "Laufey",
+    "albumArt": "https://c.ndtvimg.com/2025-06/7s4rp8ak_jd-vance-meme_625x300_28_June_25.jpg?im=FitAndFill,algorithm=dnn,width=1200,height=738"
+  },
+  {
+    "filename": "song9.mp3",
+    "title": "Real Man",
+    "artist": "Beabadoobee",
+    "albumArt": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVc4QVWTomLRQV1_Ght5mpRNTiTu_ZNaMxmg&s"
   }
 ]
