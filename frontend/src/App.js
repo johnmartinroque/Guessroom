@@ -5,14 +5,15 @@ import Home from "./screens/Home";
 import Header from "./components/Header";
 import Game from "./screens/Game";
 import GameSummary from "./screens/GameSummary";
+import "./App.css"
 function App() {
   return (
     <div>
       <Router>
-        <Header />
+        {/* <Header /> */}
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/join" element={<JoinLobby />} />
+          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<JoinLobby />} />
           <Route path="/game" element={<Game />} />
           <Route path="/gamesummary" element={<GameSummary />} />
         </Routes>
