@@ -13,11 +13,11 @@ function GameSummary() {
 
   return (
     <div className="container text-center">
-      <h1 className="mb-3 retro-glitch-title">Winner - {lobbyName}</h1>
+      <h1 className="mb-3 retro-glitch-title">Game Summary - {lobbyName}</h1>
       <h2 className="retro-glitch-text">Top 3 Players</h2>
       <ol>
         {topPlayers.map((player, idx) => (
-          <li className="retro-glitch-text" key={idx}>
+          <li className="retro-glitch-text" key={idx}>  
             {player.username} — <strong>{player.score} pts</strong>
           </li>
         ))}
