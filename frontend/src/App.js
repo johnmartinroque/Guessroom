@@ -4,6 +4,7 @@ import JoinLobby from "./screens/JoinLobby";
 import Home from "./screens/Home";
 import Header from "./components/Header";
 import Game from "./screens/Game";
+import GameSummary from "./screens/GameSummary";
 function App() {
   return (
     <div>
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/join" element={<JoinLobby />} />
           <Route path="/game" element={<Game />} />
+          <Route path="/gamesummary" element={<GameSummary />} />
         </Routes>
       </Router>
     </div>

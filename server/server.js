@@ -26,7 +26,7 @@ const io = new Server(server, {
 });
 
 // In-memory state per lobby
-// { lobbyName: { users: [], buttonColor: "secondary", currentSong: null } }
+// { lobbyName: { users: [], currentSong: null } }
 let lobbies = {};
 
 io.on("connection", (socket) => {
@@ -39,8 +39,11 @@ io.on("connection", (socket) => {
     if (!lobbies[lobbyName]) {
       lobbies[lobbyName] = {
         users: [],
-        currentSong: null,
         scores: {},
+        currentSong: null,
+        round: 0,
+        guessed: [],
+        skipVotes: [],
       };
     }
 
@@ -49,7 +52,6 @@ io.on("connection", (socket) => {
       lobbies[lobbyName].scores[username] = 0;
     }
 
-    // Send updated user list to the lobby
     io.to(lobbyName).emit("lobbyUpdate", {
       users: lobbies[lobbyName].users,
       scores: lobbies[lobbyName].scores,
@@ -57,7 +59,8 @@ io.on("connection", (socket) => {
 
     if (lobbies[lobbyName].currentSong) {
       socket.emit("musicUpdate", {
-        song: lobbies[lobbyName].currentSong,
+        ...lobbies[lobbyName].currentSong,
+        round: lobbies[lobbyName].round,
         action: "play",
       });
     }
@@ -73,66 +76,119 @@ io.on("connection", (socket) => {
       );
       delete lobbies[lobbyName].scores[username];
 
-      // ✅ always send object with both users and scores
       io.to(lobbyName).emit("lobbyUpdate", {
         users: lobbies[lobbyName].users,
         scores: lobbies[lobbyName].scores,
       });
 
-      // Clean up empty lobbies
       if (lobbies[lobbyName].users.length === 0) {
         delete lobbies[lobbyName];
       }
     }
   });
 
-  // Music play (per lobby)
-  socket.on("playMusic", ({ lobbyName }) => {
-    if (lobbies[lobbyName]) {
-      // Pick a random song from JSON
-      const randomSong = songs[Math.floor(Math.random() * songs.length)];
+  socket.on("voteSkip", ({ lobbyName, username }) => {
+    if (
+      lobbies[lobbyName] &&
+      !lobbies[lobbyName].skipVotes.includes(username)
+    ) {
+      lobbies[lobbyName].skipVotes.push(username);
 
-      lobbies[lobbyName].currentSong = randomSong;
-      io.to(lobbyName).emit("musicUpdate", {
-        ...randomSong,
-        action: "play",
+      // Notify lobby about current skip votes
+      io.to(lobbyName).emit("skipUpdate", {
+        skipVotes: lobbies[lobbyName].skipVotes.length,
+        totalUsers: lobbies[lobbyName].users.length,
       });
+
+      // If all users voted → next song
+      if (
+        lobbies[lobbyName].skipVotes.length === lobbies[lobbyName].users.length
+      ) {
+        lobbies[lobbyName].skipVotes = [];
+        nextRound(lobbyName);
+      }
     }
   });
 
-  // Music stop (per lobby)
-  socket.on("stopMusic", ({ lobbyName }) => {
-    if (lobbies[lobbyName]) {
-      lobbies[lobbyName].currentSong = null;
-      io.to(lobbyName).emit("musicUpdate", {
-        song: null,
-        action: "stop",
-      });
+  // Start the game (first round)
+  socket.on("startGame", ({ lobbyName }) => {
+    if (lobbies[lobbyName] && !lobbies[lobbyName].gameStarted) {
+      lobbies[lobbyName].gameStarted = true;
+      lobbies[lobbyName].round = 1;
+      playRandomSong(lobbyName);
+
+      // Broadcast to all users that the game has started
+      io.to(lobbyName).emit("gameStarted");
     }
   });
 
+  // Handle guesses
   socket.on("submitAnswer", ({ lobbyName, username, answer }) => {
     if (lobbies[lobbyName] && lobbies[lobbyName].currentSong) {
       const correctArtist = lobbies[lobbyName].currentSong.artist.toLowerCase();
       const guess = answer.trim().toLowerCase();
 
       if (guess === correctArtist) {
-        lobbies[lobbyName].scores[username] += 1; // add point
+        if (!lobbies[lobbyName].guessed.includes(username)) {
+          lobbies[lobbyName].guessed.push(username);
+          lobbies[lobbyName].scores[username] += 1;
+        }
+
         io.to(lobbyName).emit("correctAnswer", {
           username,
           answer,
           scores: lobbies[lobbyName].scores,
         });
+
+        // If all users guessed correctly → next round
+        if (
+          lobbies[lobbyName].guessed.length === lobbies[lobbyName].users.length
+        ) {
+          nextRound(lobbyName);
+        }
       } else {
-        socket.emit("wrongAnswer", { answer }); // feedback just to user
+        socket.emit("wrongAnswer", { answer });
       }
     }
   });
 
-  // Handle disconnect
+  function playRandomSong(lobbyName) {
+    const randomSong = songs[Math.floor(Math.random() * songs.length)];
+    lobbies[lobbyName].currentSong = randomSong;
+    lobbies[lobbyName].guessed = [];
+    lobbies[lobbyName].skipVotes = [];
+
+    io.to(lobbyName).emit("musicUpdate", {
+      ...randomSong,
+      round: lobbies[lobbyName].round,
+      action: "play",
+    });
+  }
+
+  const MAX_ROUNDS = 3;
+
+  function nextRound(lobbyName) {
+    if (!lobbies[lobbyName]) return;
+
+    if (lobbies[lobbyName].round >= MAX_ROUNDS) {
+      // Game finished → emit game summary
+      const scores = lobbies[lobbyName].scores;
+      // Sort top 3
+      const topPlayers = Object.entries(scores)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map(([username, score]) => ({ username, score }));
+
+      io.to(lobbyName).emit("gameFinished", { topPlayers });
+      return;
+    }
+
+    lobbies[lobbyName].round += 1;
+    playRandomSong(lobbyName);
+  }
+
   socket.on("disconnect", () => {
     console.log("🔴 A user disconnected:", socket.id);
-    // NOTE: Optional – could also auto-remove from lobbies here if you track socket<->username mapping
   });
 });
 
