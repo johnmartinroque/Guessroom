@@ -40,7 +40,7 @@ function JoinLobby() {
         type="text"
         placeholder="Enter Lobby Name"
         value={lobbyName}
-        onChange={(e) => setLobbyName(e.target.value)}
+        onChange={(e) => setLobbyName(e.target.value.toLowerCase())}
         className="retro-input mt-5"
       />
       <input
