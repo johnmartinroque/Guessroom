@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 
-const socket = io("http://192.168.100.33:5000");
+const socket = io(process.env.REACT_APP_SOCKET_URL);
 
 function JoinLobby() {
   const [username, setUsername] = useState("");
