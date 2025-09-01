@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
+import LobbyList from "../components/LobbyList";
 
 const socket = io(process.env.REACT_APP_SOCKET_URL);
 
@@ -55,6 +56,7 @@ function JoinLobby() {
       </button>
 
       {error && <p className="text-danger mt-2">{error}</p>}
+      <LobbyList username={username} navigate={navigate} />
     </div>
   );
 }

@@ -29,9 +29,18 @@ const io = new Server(server, {
 // In-memory state per lobby
 // { lobbyName: { users: [], currentSong: null } }
 let lobbies = {};
+let socketUserMap = {};
 
 io.on("connection", (socket) => {
   console.log("🟢 A user connected:", socket.id);
+
+  socket.on("getLobbies", () => {
+    const lobbyList = Object.keys(lobbies).map((lobbyName) => ({
+      lobbyName,
+      users: lobbies[lobbyName].users,
+    }));
+    socket.emit("lobbyList", lobbyList);
+  });
 
   // Join a lobby
   socket.on("joinLobby", ({ lobbyName, username }) => {
@@ -60,6 +69,8 @@ io.on("connection", (socket) => {
       lobbies[lobbyName].users.push(username);
       lobbies[lobbyName].scores[username] = 0;
     }
+
+    socketUserMap[socket.id] = { lobbyName, username };
 
     io.to(lobbyName).emit("lobbyUpdate", {
       users: lobbies[lobbyName].users,
@@ -214,6 +225,30 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log("🔴 A user disconnected:", socket.id);
+
+    const userData = socketUserMap[socket.id];
+    if (userData) {
+      const { lobbyName, username } = userData;
+      delete socketUserMap[socket.id]; // cleanup map
+
+      if (lobbies[lobbyName]) {
+        lobbies[lobbyName].users = lobbies[lobbyName].users.filter(
+          (u) => u !== username
+        );
+        delete lobbies[lobbyName].scores[username];
+
+        io.to(lobbyName).emit("lobbyUpdate", {
+          users: lobbies[lobbyName].users,
+          scores: lobbies[lobbyName].scores,
+        });
+
+        // 🔹 Delete empty lobby
+        if (lobbies[lobbyName].users.length === 0) {
+          delete lobbies[lobbyName];
+          console.log(`🗑️ Deleted empty lobby: ${lobbyName}`);
+        }
+      }
+    }
   });
 
   socket.on("sendOngoingMessage", ({ lobbyName, username, message }) => {
