@@ -48,6 +48,13 @@ io.on("connection", (socket) => {
       };
     }
 
+    if (lobbies[lobbyName].users.includes(username)) {
+      socket.emit("joinError", {
+        message: "Username already taken in this lobby!",
+      });
+      return;
+    }
+
     if (!lobbies[lobbyName].users.includes(username)) {
       lobbies[lobbyName].users.push(username);
       lobbies[lobbyName].scores[username] = 0;
