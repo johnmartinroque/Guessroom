@@ -361,6 +361,24 @@ body {
   .game-layout {
     padding: 1rem;
   }
+
+  .lobby-info-container {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.5rem;
+  }
+
+  .lobby-info-text {
+    width: 100%;
+    text-align: center;
+    word-break: break-word; /* prevent overflow */
+  }
+
+  .retro-button {
+    width: 100%;
+    max-width: 200px; /* optional */
+    align-self: center;
+  }
 }
 
 /* Extra Small Screens - Mobile Phones */
@@ -396,22 +414,5 @@ body {
   .game-container {
     max-height: 90vh;
     overflow-y: auto;
-  }
-}
-
-/* Center and full width for buttons on smaller screens */
-@media (max-width: 768px) {
-  button.retro-button,
-  button.retro-button-submit {
-    width: 100%;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  label.retro-glitch-text.align-self-center {
-    width: 100%;
-    text-align: center;
-    display: block;
   }
 }

@@ -38,14 +38,13 @@ function LobbyList({ username, navigate }) {
       <h2 className="retro-glitch-title">Available Lobbies</h2>
       <ul className="list-unstyled mt-3">
         {lobbies.length === 0 ? (
-          <p>No active lobbies yet.</p>
+          <p className="retro-glitch-text">No active lobbies yet.</p>
         ) : (
           lobbies.map((lobby, index) => (
-            <li key={index} className="mb-3">
-              <div className="d-flex justify-content-between align-items-center">
-                <span>
-                  <strong>{lobby.lobbyName}</strong> ({lobby.users.length}{" "}
-                  players)
+            <li key={index} className="retro-glitch-text mb-3">
+              <div className="d-flex justify-content-between align-items-center lobby-info-container">
+                <span className="lobby-info-text">
+                  {lobby.lobbyName} ({lobby.users.length} {lobby.users.length === 1 ? "player" : "players"})
                 </span>
                 <button
                   className="retro-button"
