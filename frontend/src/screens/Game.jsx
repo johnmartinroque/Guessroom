@@ -21,6 +21,9 @@ function Game() {
   const [guessedUsers, setGuessedUsers] = useState([]);
   const audioRef = useRef(null);
 
+  // Ref for the feedback container for auto-scroll
+  const feedbackRef = useRef(null);
+
   useEffect(() => {
     if (!lobbyName || !username) {
       navigate("/join");
@@ -92,6 +95,13 @@ function Game() {
     };
   }, [lobbyName, username, navigate]);
 
+  // Auto-scroll feedback div when feedback changes
+  useEffect(() => {
+    if (feedbackRef.current) {
+      feedbackRef.current.scrollTop = feedbackRef.current.scrollHeight;
+    }
+  }, [feedback]);
+
   const submitAnswer = (e) => {
     e.preventDefault();
     if (!answer.trim()) return;
@@ -139,7 +149,7 @@ function Game() {
         <h1 className="retro-glitch-title mb-2">Lobby: {lobbyName}</h1>
         <h3 className="retro-glitch-text">Lobby Music</h3>
         {currentSong ? (
-          <div className="d-flex flex-column justify-center">
+          <div className="d-flex flex-column align-items-center">
             <p className="retro-glitch-text">
               Now Playing: {currentSong.title} by ???
             </p>
@@ -150,7 +160,8 @@ function Game() {
                 height: "300px",
                 width: "auto",
                 objectFit: "cover",
-                display: "block"
+                objectPosition: "center",
+                display: "block",
               }}
             />
           </div>
@@ -172,7 +183,7 @@ function Game() {
               <label className="retro-glitch-text align-self-center">
                 Guess the artist
               </label>
-              
+
               <input
                 className="retro-input flex-grow-1"
                 type="text"
@@ -188,9 +199,21 @@ function Game() {
         )}
 
         {feedback.length > 0 && (
-          <div className="mt-2">
-            {feedback.map((msg, idx) => (
-              <p className="retro-glitch-text" key={idx}>
+          <div
+            ref={feedbackRef}
+            style={{
+              maxHeight: "3.2em", // approx 2 lines of 1.6em each
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            {feedback.slice(-5).map((msg, idx) => (
+              <p
+                className="retro-glitch-text"
+                key={idx}
+                style={{ margin: 0, lineHeight: "1.6em" }}
+              >
                 {msg}
               </p>
             ))}
