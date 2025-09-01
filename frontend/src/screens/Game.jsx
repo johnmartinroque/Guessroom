@@ -35,21 +35,24 @@ function Game() {
       setGuessedUsers(guessedUsers || []);
     });
 
-    socket.on("musicUpdate", ({ title, albumArt, filename, action, round }) => {
-      setRound(round || 0);
+    socket.on(
+      "musicUpdate",
+      ({ title, albumArt, artist, filename, action, round }) => {
+        setRound(round || 0);
 
-      if (action === "play") {
-        setCurrentSong({ title, albumArt, filename });
-        setGuessedUsers([]); // reset guessed users for new song
-        setFeedback([]);
-        audioRef.current.src = `${process.env.REACT_APP_SOCKET_URL}/music/${filename}`;
-        audioRef.current.play().catch((err) => console.log(err));
-      } else if (action === "stop") {
-        setCurrentSong(null);
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
+        if (action === "play") {
+          setCurrentSong({ title, albumArt, artist, filename });
+          setGuessedUsers([]); // reset guessed users for new song
+          setFeedback([]);
+          audioRef.current.src = `${process.env.REACT_APP_SOCKET_URL}/music/${filename}`;
+          audioRef.current.play().catch((err) => console.log(err));
+        } else if (action === "stop") {
+          setCurrentSong(null);
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }
       }
-    });
+    );
 
     socket.on("skipUpdate", ({ skipVotes, totalUsers }) => {
       setFeedback((prev) => [
@@ -162,7 +165,9 @@ function Game() {
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
             />
-            <button className="retro-button" type="submit">Submit</button>
+            <button className="retro-button" type="submit">
+              Submit
+            </button>
           </form>
         )}
 

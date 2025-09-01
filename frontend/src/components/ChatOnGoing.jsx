@@ -12,15 +12,15 @@ function ChatOnGoing({ socket, lobbyName, username, guessedUsers }) {
   const sendMessage = () => {
     if (!chatInput.trim()) return;
 
+    // Only send messages if user hasn't finished
     if (!hasFinished) {
       socket.emit("sendOngoingMessage", {
         lobbyName,
         username,
         message: chatInput,
       });
+      setChatInput("");
     }
-
-    setChatInput("");
   };
 
   useEffect(() => {
@@ -32,8 +32,6 @@ function ChatOnGoing({ socket, lobbyName, username, guessedUsers }) {
       socket.off("receiveOngoingMessage");
     };
   }, []);
-
-  if (hasFinished) return null; // hide if user finished
 
   return (
     <div className="chat-section mt-4 border p-2">
@@ -59,10 +57,19 @@ function ChatOnGoing({ socket, lobbyName, username, guessedUsers }) {
               sendMessage();
             }
           }}
-          placeholder="Type a message..."
+          placeholder={
+            hasFinished
+              ? "You can't send messages here after finishing"
+              : "Type a message..."
+          }
           className="retro-input me-2"
+          disabled={hasFinished} // disable input if finished
         />
-        <button className="retro-button" onClick={sendMessage}>
+        <button
+          className="retro-button"
+          onClick={sendMessage}
+          disabled={hasFinished} // disable button if finished
+        >
           Send
         </button>
       </div>
