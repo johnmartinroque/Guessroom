@@ -114,7 +114,7 @@ function Game() {
   };
 
   return (
-    <div className="container">
+    <div className="game-container">
       <h1 className="retro-glitch-title mb-2">Lobby: {lobbyName}</h1>
       <h1 className="retro-glitch-text mb-3">Round: {round}</h1>
       <button onClick={leaveLobby} className="retro-button mb-3">
@@ -135,7 +135,7 @@ function Game() {
         <h3 className="retro-glitch-text">Lobby Music</h3>
         {currentSong ? (
           <div>
-            <p>Now Playing: {currentSong.title} by ???</p>
+            <p className="retro-glitch-text">Now Playing: {currentSong.title} by ???</p>
             <img
               src={currentSong.albumArt}
               alt={currentSong.title}
@@ -156,8 +156,9 @@ function Game() {
 
         {gameStarted && (
           <form onSubmit={submitAnswer} className="mt-3">
-            <label>Guess the artist</label>
+            <label className="retro-glitch-text">Guess the artist</label>
             <input
+              className="retro-input"
               type="text"
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
@@ -169,7 +170,7 @@ function Game() {
         {feedback.length > 0 && (
           <div className="mt-2">
             {feedback.map((msg, idx) => (
-              <p key={idx}>{msg}</p>
+              <p className="retro-glitch-text" key={idx}>{msg}</p>
             ))}
           </div>
         )}
