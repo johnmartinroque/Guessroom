@@ -214,21 +214,32 @@ body {
 
 .game-layout {
   display: flex;
-  justify-content: center; /* center the main container */
+  justify-content: center;
   align-items: flex-start;
   gap: 2rem;
   padding: 1rem;
-  background-color: red;
   height: 100vh;
   box-sizing: border-box;
 }
 
+/* Left Sidebar */
+.sidebar-left {
+  flex: 1;
+  max-width: 300px;
+  border-radius: 8px;
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+  background-color: red;
+}
+
+/* Game Content (center) */
 .game-container {
-  flex: 3;
+  flex: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: blue;
+  background-color: #222;
   padding: 2rem;
   border-radius: 8px;
   width: 100%;
@@ -244,6 +255,6 @@ body {
   padding: 1rem;
   border-radius: 8px;
   height: 100%;
-  overflow-y: auto;
+  overflow-y: hidden;
   box-sizing: border-box;
 }

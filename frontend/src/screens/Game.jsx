@@ -115,12 +115,9 @@ function Game() {
 
   return (
     <div className="game-layout">
-      <div className="game-container">
-        <h1 className="retro-glitch-title mb-2">Lobby: {lobbyName}</h1>
-        <h1 className="retro-glitch-text mb-3">Round: {round}</h1>
-        <button onClick={leaveLobby} className="retro-button mb-3">
-          Leave Lobby
-        </button>
+      {/* LEFT SIDEBAR */}
+      <div className="sidebar-left">
+        <h2 className="retro-glitch-text mb-3">Round: {round}</h2>
 
         <h2 className="retro-glitch-text">Current Users:</h2>
         <ul className="list-unstyled">
@@ -132,67 +129,73 @@ function Game() {
           ))}
         </ul>
 
-        <div className="mt-4">
-          <h3 className="retro-glitch-text">Lobby Music</h3>
-          {currentSong ? (
-            <div>
-              <p className="retro-glitch-text">
-                Now Playing: {currentSong.title} by ???
-              </p>
-              <img
-                src={currentSong.albumArt}
-                alt={currentSong.title}
-                width="150"
-              />
-            </div>
-          ) : (
-            <p className="retro-glitch-text">
-              {gameStarted ? "Waiting for next song..." : "Press START to begin"}
-            </p>
-          )}
-
-          {!gameStarted && (
-            <button className="retro-button mt-3" onClick={startGame}>
-              START GAME
-            </button>
-          )}
-
-          {gameStarted && (
-            <form onSubmit={submitAnswer} className="mt-3">
-              <label className="retro-glitch-text">Guess the artist</label>
-              <input
-                className="retro-input"
-                type="text"
-                value={answer}
-                onChange={(e) => setAnswer(e.target.value)}
-              />
-              <button className="retro-button" type="submit">
-                Submit
-              </button>
-            </form>
-          )}
-
-          {feedback.length > 0 && (
-            <div className="mt-2">
-              {feedback.map((msg, idx) => (
-                <p className="retro-glitch-text" key={idx}>
-                  {msg}
-                </p>
-              ))}
-            </div>
-          )}
-
-          {currentSong && (
-            <button className="retro-button mt-2" onClick={voteSkip}>
-              Vote to Skip
-            </button>
-          )}
-
-          <audio ref={audioRef} controls hidden />
-        </div>
+        <button onClick={leaveLobby} className="retro-button mt-3">
+          Leave Lobby
+        </button>
       </div>
 
-      {/* Chat Area */}
+      {/* CENTER GAME CONTENT */}
+      <div className="game-container">
+        <h1 className="retro-glitch-title mb-2">Lobby: {lobbyName}</h1>
+        <h3 className="retro-glitch-text">Lobby Music</h3>
+        {currentSong ? (
+          <div>
+            <p className="retro-glitch-text">
+              Now Playing: {currentSong.title} by ???
+            </p>
+            <img
+              src={currentSong.albumArt}
+              alt={currentSong.title}
+              width="150"
+            />
+          </div>
+        ) : (
+          <p className="retro-glitch-text">
+            {gameStarted ? "Waiting for next song..." : "Press START to begin"}
+          </p>
+        )}
+
+        {!gameStarted && (
+          <button className="retro-button mt-3" onClick={startGame}>
+            START GAME
+          </button>
+        )}
+
+        {gameStarted && (
+          <form onSubmit={submitAnswer} className="mt-3">
+            <label className="retro-glitch-text">Guess the artist</label>
+            <input
+              className="retro-input"
+              type="text"
+              value={answer}
+              onChange={(e) => setAnswer(e.target.value)}
+            />
+            <button className="retro-button" type="submit">
+              Submit
+            </button>
+          </form>
+        )}
+
+        {feedback.length > 0 && (
+          <div className="mt-2">
+            {feedback.map((msg, idx) => (
+              <p className="retro-glitch-text" key={idx}>
+                {msg}
+              </p>
+            ))}
+          </div>
+        )}
+
+        {currentSong && (
+          <button className="retro-button mt-2" onClick={voteSkip}>
+            Vote to Skip
+          </button>
+        )}
+
+        <audio ref={audioRef} controls hidden />
+      </div>
+
+      {/* RIGHT CHAT SIDEBAR */}
       <div>
         <ChatOnGoing
           socket={socket}
