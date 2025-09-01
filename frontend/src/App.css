@@ -25,7 +25,7 @@ body {
   margin-top: 1rem;
   word-break: break-word;
   white-space: normal;
-  line-height: 1.1; 
+  line-height: 1.1;
   overflow-wrap: break-word;
 }
 
@@ -38,7 +38,6 @@ body {
   text-transform: uppercase;
   animation: glitch 1.2s infinite;
 }
-
 
 @keyframes glitch {
   0% {
@@ -131,7 +130,6 @@ body {
   0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
     opacity: 1;
   }
-
   20%, 24%, 55% {
     opacity: 0.4;
   }
@@ -164,7 +162,6 @@ body {
   z-index: 10;
 }
 
-
 @keyframes glitchAnim {
   0% {
     text-shadow: 2px 0 #ff00c8, -2px 0 #00FFF7;
@@ -187,7 +184,6 @@ body {
     opacity: 1;
   }
 }
-
 
 @keyframes loadingFadeIn {
   from { opacity: 0; }
@@ -270,15 +266,14 @@ body {
   justify-content: flex-start; /* align items from top */
   background-color: rgba(48, 48, 48, 0.2);
   padding: 1.2rem;
-  height: 95vh; /* keep this */
+  height: 95vh;
   border-radius: 0.3rem;
   width: 100%;
   box-sizing: border-box;
   overflow-x: hidden;
-
-  /* add this: */
   overflow-y: auto; /* enable scrolling if content is too tall */
 }
+
 .chat-container {
   display: flex;
   flex-direction: column;
@@ -310,14 +305,13 @@ body {
   flex: 1;
 }
 
-
 /* Medium Screens - Tablets and Small Laptops */
 @media (max-width: 1200px) {
   .game-layout {
     flex-direction: column;
     align-items: stretch;
     padding: 1rem;
-    height: auto;
+    height: auto; /* Changed */
   }
 
   .sidebar-left,
@@ -325,7 +319,7 @@ body {
   .game-container {
     width: 100%;
     max-width: 100%;
-    height: auto;
+    height: auto; /* Changed */
     margin-bottom: 1rem;
   }
 
@@ -380,13 +374,22 @@ body {
   .lobby-info-text {
     width: 100%;
     text-align: center;
-    word-break: break-word; /* prevent overflow */
+    word-break: break-word;
   }
 
   .retro-button {
     width: 100%;
-    max-width: 200px; /* optional */
+    max-width: 200px;
     align-self: center;
+  }
+
+  /* Prevent scroll by overriding fixed heights */
+  .sidebar-left,
+  .chat-container,
+  .game-container {
+    height: auto !important;
+    max-height: none !important;
+    overflow-y: visible !important;
   }
 }
 
@@ -407,14 +410,21 @@ body {
   .game-layout {
     padding: 1rem 0.5rem;
   }
+
+.game-container {
+    flex-shrink: 0 !important;  /* prevent shrinking */
+    min-width: 320px;            /* minimum width to prevent too much shrinking */
+    max-width: 100%;             /* prevent overflow */
+    height: auto !important;     /* or fixed height if you want */
+  }
+
 }
 
 /* Additional zoom and large font size fixes */
 @media (min-resolution: 2dppx), /* Retina */
-       (min-width: 1600px),
-       (max-width: 1440px) and (max-height: 900px) {
+  (min-width: 1600px),
+  (max-width: 1440px) and (max-height: 900px) {
   .game-layout {
-    max-height: 100vh;
     overflow-y: auto;
   }
 
