@@ -80,7 +80,6 @@ function Game() {
     });
 
     socket.on("gameFinished", ({ topPlayers }) => {
-      // Send topPlayers to the summary page via state
       navigate("/gamesummary", { state: { topPlayers, lobbyName } });
     });
 
@@ -107,6 +106,7 @@ function Game() {
     socket.emit("startGame", { lobbyName });
     setGameStarted(true);
   };
+
   const leaveLobby = () => {
     socket.emit("leaveLobby", { lobbyName, username });
     navigate("/");
@@ -117,88 +117,101 @@ function Game() {
   };
 
   return (
-    <div className="container">
-      <h1 className="retro-glitch-title mb-2">Lobby: {lobbyName}</h1>
-      <h1 className="retro-glitch-text mb-3">Round: {round}</h1>
-      <button onClick={leaveLobby} className="retro-button mb-3">
-        Leave Lobby
-      </button>
+    <div className="game-layout">
+      <div className="game-container">
+        <h1 className="retro-glitch-title mb-2">Lobby: {lobbyName}</h1>
+        <h1 className="retro-glitch-text mb-3">Round: {round}</h1>
+        <button onClick={leaveLobby} className="retro-button mb-3">
+          Leave Lobby
+        </button>
 
-      <h2 className="retro-glitch-text">Current Users:</h2>
-      <ul className="list-unstyled">
-        {users.map((user, idx) => (
-          <li className="retro-glitch-text" key={idx}>
-            {user} — <strong>{scores[user] || 0} pts</strong>
-            {guessedUsers.includes(user) && <span> ✅</span>}
-          </li>
-        ))}
-      </ul>
+        <h2 className="retro-glitch-text">Current Users:</h2>
+        <ul className="list-unstyled">
+          {users.map((user, idx) => (
+            <li className="retro-glitch-text" key={idx}>
+              {user} — <strong>{scores[user] || 0} pts</strong>
+              {guessedUsers.includes(user) && <span> ✅</span>}
+            </li>
+          ))}
+        </ul>
 
-      <div className="mt-4">
-        <h3 className="retro-glitch-text">Lobby Music</h3>
-        {currentSong ? (
-          <div>
-            <p>Now Playing: {currentSong.title} by ???</p>
-            <img
-              src={currentSong.albumArt}
-              alt={currentSong.title}
-              width="150"
-            />
-          </div>
-        ) : (
-          <p className="retro-glitch-text">
-            {gameStarted ? "Waiting for next song..." : "Press START to begin"}
-          </p>
-        )}
+        <div className="mt-4">
+          <h3 className="retro-glitch-text">Lobby Music</h3>
+          {currentSong ? (
+            <div>
+              <p className="retro-glitch-text">
+                Now Playing: {currentSong.title} by ???
+              </p>
+              <img
+                src={currentSong.albumArt}
+                alt={currentSong.title}
+                width="150"
+              />
+            </div>
+          ) : (
+            <p className="retro-glitch-text">
+              {gameStarted
+                ? "Waiting for next song..."
+                : "Press START to begin"}
+            </p>
+          )}
 
-        {!gameStarted && (
-          <button className="retro-button mt-3" onClick={startGame}>
-            START GAME
-          </button>
-        )}
-
-        {gameStarted && (
-          <form onSubmit={submitAnswer} className="mt-3">
-            <label>Guess the artist</label>
-            <input
-              type="text"
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-            />
-            <button className="retro-button" type="submit">
-              Submit
+          {!gameStarted && (
+            <button className="retro-button mt-3" onClick={startGame}>
+              START GAME
             </button>
-          </form>
-        )}
+          )}
 
-        {feedback.length > 0 && (
-          <div className="mt-2">
-            {feedback.map((msg, idx) => (
-              <p key={idx}>{msg}</p>
-            ))}
-          </div>
-        )}
+          {gameStarted && (
+            <form onSubmit={submitAnswer} className="mt-3">
+              <label className="retro-glitch-text">Guess the artist</label>
+              <input
+                className="retro-input"
+                type="text"
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+              />
+              <button className="retro-button" type="submit">
+                Submit
+              </button>
+            </form>
+          )}
 
-        {currentSong && (
-          <button className="retro-button mt-2" onClick={voteSkip}>
-            Vote to Skip
-          </button>
-        )}
+          {feedback.length > 0 && (
+            <div className="mt-2">
+              {feedback.map((msg, idx) => (
+                <p className="retro-glitch-text" key={idx}>
+                  {msg}
+                </p>
+              ))}
+            </div>
+          )}
 
-        <audio ref={audioRef} controls hidden />
+          {currentSong && (
+            <button className="retro-button mt-2" onClick={voteSkip}>
+              Vote to Skip
+            </button>
+          )}
+
+          <audio ref={audioRef} controls hidden />
+        </div>
       </div>
-      <ChatOnGoing
-        socket={socket}
-        lobbyName={lobbyName}
-        username={username}
-        guessedUsers={guessedUsers}
-      />
-      <ChatFinished
-        socket={socket}
-        lobbyName={lobbyName}
-        username={username}
-        guessedUsers={guessedUsers}
-      />
+
+      {/* Chat Area */}
+      <div>
+        <ChatOnGoing
+          socket={socket}
+          lobbyName={lobbyName}
+          username={username}
+          guessedUsers={guessedUsers}
+        />
+        <ChatFinished
+          socket={socket}
+          lobbyName={lobbyName}
+          username={username}
+          guessedUsers={guessedUsers}
+        />
+      </div>
     </div>
   );
 }

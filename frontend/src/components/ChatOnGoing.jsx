@@ -34,11 +34,11 @@ function ChatOnGoing({ socket, lobbyName, username, guessedUsers }) {
   }, []);
 
   return (
-    <div className="chat-section mt-4 border p-2">
+    <div className="chat-container border p-2">
       <h4 className="retro-glitch-text text-start">Ongoing Chat</h4>
       <div
         className="chat-box"
-        style={{ maxHeight: "200px", overflowY: "auto" }}
+        style={{ height: "81vh", overflowY: "auto" }}
       >
         {messages.map((msg, idx) => (
           <p className="retro-glitch-text text-start" key={idx}>
