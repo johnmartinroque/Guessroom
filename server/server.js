@@ -22,21 +22,8 @@ app.use("/music", express.static(path.join(__dirname, "music")));
 
 const server = http.createServer(app);
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://guessroom.vercel.app",
-];
-
 const io = new Server(server, {
-  cors: {
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-  },
+  cors: { origin: "*" }, // allow frontend from any IP
 });
 
 // In-memory state per lobby

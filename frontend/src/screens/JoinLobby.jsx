@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 
-const socket = io(process.env.REACT_APP_SOCKET_URL, {
-  transports: ["websocket", "polling"],
-});
+const socket = io(process.env.REACT_APP_SOCKET_URL);
 
 function JoinLobby() {
   const [username, setUsername] = useState("");
