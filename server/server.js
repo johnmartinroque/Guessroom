@@ -34,12 +34,16 @@ let socketUserMap = {};
 io.on("connection", (socket) => {
   console.log("🟢 A user connected:", socket.id);
 
-  socket.on("getLobbies", () => {
+  function broadcastLobbies() {
     const lobbyList = Object.keys(lobbies).map((lobbyName) => ({
       lobbyName,
       users: lobbies[lobbyName].users,
     }));
-    socket.emit("lobbyList", lobbyList);
+    io.emit("lobbyList", lobbyList); // broadcast to all clients
+  }
+
+  socket.on("getLobbies", () => {
+    broadcastLobbies(); // still allow manual request
   });
 
   // Join a lobby
@@ -65,10 +69,8 @@ io.on("connection", (socket) => {
       return;
     }
 
-    if (!lobbies[lobbyName].users.includes(username)) {
-      lobbies[lobbyName].users.push(username);
-      lobbies[lobbyName].scores[username] = 0;
-    }
+    lobbies[lobbyName].users.push(username);
+    lobbies[lobbyName].scores[username] = 0;
 
     socketUserMap[socket.id] = { lobbyName, username };
 
@@ -76,6 +78,9 @@ io.on("connection", (socket) => {
       users: lobbies[lobbyName].users,
       scores: lobbies[lobbyName].scores,
     });
+
+    // 🔹 Now broadcast updated lobby list to all
+    broadcastLobbies();
 
     if (lobbies[lobbyName].currentSong) {
       socket.emit("musicUpdate", {
@@ -104,6 +109,9 @@ io.on("connection", (socket) => {
       if (lobbies[lobbyName].users.length === 0) {
         delete lobbies[lobbyName];
       }
+
+      // 🔹 Update lobby list for all
+      broadcastLobbies();
     }
   });
 
@@ -229,7 +237,7 @@ io.on("connection", (socket) => {
     const userData = socketUserMap[socket.id];
     if (userData) {
       const { lobbyName, username } = userData;
-      delete socketUserMap[socket.id]; // cleanup map
+      delete socketUserMap[socket.id];
 
       if (lobbies[lobbyName]) {
         lobbies[lobbyName].users = lobbies[lobbyName].users.filter(
@@ -242,11 +250,13 @@ io.on("connection", (socket) => {
           scores: lobbies[lobbyName].scores,
         });
 
-        // 🔹 Delete empty lobby
         if (lobbies[lobbyName].users.length === 0) {
           delete lobbies[lobbyName];
           console.log(`🗑️ Deleted empty lobby: ${lobbyName}`);
         }
+
+        // 🔹 Update lobby list for all
+        broadcastLobbies();
       }
     }
   });
