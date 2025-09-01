@@ -114,17 +114,17 @@ function Game() {
   };
 
   return (
-    <div className="container text-center p-4">
-      <h1 className="mb-2">🎮 Lobby: {lobbyName}</h1>
-      <h3 className="mb-3">Round: {round}</h3>
-      <button onClick={leaveLobby} className="btn btn-danger mb-3">
+    <div className="container">
+      <h1 className="retro-glitch-title mb-2">Lobby: {lobbyName}</h1>
+      <h1 className="retro-glitch-text mb-3">Round: {round}</h1>
+      <button onClick={leaveLobby} className="retro-button mb-3">
         Leave Lobby
       </button>
 
-      <h2>Current Users:</h2>
+      <h2 className="retro-glitch-text">Current Users:</h2>
       <ul className="list-unstyled">
         {users.map((user, idx) => (
-          <li key={idx}>
+          <li className="retro-glitch-text" key={idx}>
             {user} — <strong>{scores[user] || 0} pts</strong>
             {guessedUsers.includes(user) && <span> ✅</span>}
           </li>
@@ -132,7 +132,7 @@ function Game() {
       </ul>
 
       <div className="mt-4">
-        <h3>Lobby Music</h3>
+        <h3 className="retro-glitch-text">Lobby Music</h3>
         {currentSong ? (
           <div>
             <p>Now Playing: {currentSong.title} by ???</p>
@@ -143,13 +143,13 @@ function Game() {
             />
           </div>
         ) : (
-          <p>
+          <p className="retro-glitch-text">
             {gameStarted ? "Waiting for next song..." : "Press START to begin"}
           </p>
         )}
 
         {!gameStarted && (
-          <button className="btn btn-primary mt-3" onClick={startGame}>
+          <button className="retro-button mt-3" onClick={startGame}>
             START GAME
           </button>
         )}
@@ -162,7 +162,7 @@ function Game() {
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
             />
-            <button type="submit">Submit</button>
+            <button className="retro-button" type="submit">Submit</button>
           </form>
         )}
 
@@ -175,7 +175,7 @@ function Game() {
         )}
 
         {currentSong && (
-          <button className="btn btn-warning mt-2" onClick={voteSkip}>
+          <button className="retro-button mt-2" onClick={voteSkip}>
             Vote to Skip
           </button>
         )}

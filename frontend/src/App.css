@@ -1,5 +1,5 @@
 body {
-  overflow: hidden;
+  /* overflow: hidden; */
   background-color: #0d0d0d !important;
   color: #F2F2F2;
   font-family: 'Press Start 2P', cursive;
@@ -24,6 +24,17 @@ body {
   text-transform: uppercase;
   animation: glitch 1.2s infinite;
 }
+
+.retro-glitch-text {
+  font-family: 'Press Start 2P', cursive;
+  color: #d0ff14;
+  text-align: center;
+  letter-spacing: 0.1em;
+  position: relative;
+  text-transform: uppercase;
+  animation: glitch 1.2s infinite;
+}
+
 
 @keyframes glitch {
   0% {
@@ -79,6 +90,7 @@ body {
   margin-top: 1rem;
   outline: none;
   transition: box-shadow 0.3s ease;
+  width: 50%;
 }
 
 .retro-input:focus {
@@ -194,4 +206,8 @@ body {
 
 .container {
   padding: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
