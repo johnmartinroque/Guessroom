@@ -119,10 +119,10 @@ function Game() {
       <div className="sidebar-left">
         <h2 className="retro-glitch-text mb-3">Round: {round}</h2>
 
-        <h2 className="retro-glitch-text">Current Users:</h2>
+        <h2 className="retro-glitch-text text-start mt-2">Current Users:</h2>
         <ul className="list-unstyled">
           {users.map((user, idx) => (
-            <li className="retro-glitch-text" key={idx}>
+            <li className="retro-glitch-text text-start" key={idx}>
               {user} — <strong>{scores[user] || 0} pts</strong>
               {guessedUsers.includes(user) && <span> ✅</span>}
             </li>

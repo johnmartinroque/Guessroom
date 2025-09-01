@@ -45,19 +45,22 @@ function ChatOnGoing({ socket, lobbyName, username, guessedUsers }) {
   if (hasFinished) return null; // hide if user finished
 
   return (
-    <div className="chat-container border p-2">
-      <h4 className="retro-glitch-text text-start">Ongoing Chat</h4>
+    <div className="chat-container">
+      <h1 className="retro-glitch-text text-start">Ongoing Chat</h1>
       <div
         className="chat-box"
         style={{
-          height: "81vh",
+          height: "70.7vh",
           overflowY: "hidden",
           display: "flex",
           flexDirection: "column",
         }}
       >
         {messages.map((msg, idx) => (
-          <p className="retro-glitch-text text-start" key={idx}>
+          <p className="retro-glitch-text text-start" 
+          key={idx}
+          style={{ wordBreak: "break-word", overflowWrap: "break-word" }}
+          >
             <strong>{msg.username}:</strong> {msg.message}
           </p>
         ))}

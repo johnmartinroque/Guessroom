@@ -45,19 +45,22 @@ function ChatFinished({ socket, lobbyName, username, guessedUsers }) {
   if (!hasFinished) return null; // hide if user hasn't finished
 
   return (
-    <div className="chat-container border p-2">
-      <h4 className="retro-glitch-text text-start">Finished Chat</h4>
+    <div className="chat-container p-2">
+      <h1 className="retro-glitch-text text-start">Finished Chat</h1>
       <div
         className="chat-box"
         style={{
-          height: "81vh",
+          height: "70.7vh",
           overflowY: "hidden",
           display: "flex",
           flexDirection: "column",
         }}
       >
         {messages.map((msg, idx) => (
-          <p className="retro-glitch-text text-start" key={idx}>
+          <p className="retro-glitch-text text-start" 
+          key={idx}
+          style={{ wordBreak: "break-word", overflowWrap: "break-word" }}
+          >
             <strong>{msg.username}:</strong> {msg.message}
           </p>
         ))}
@@ -75,9 +78,10 @@ function ChatFinished({ socket, lobbyName, username, guessedUsers }) {
             }
           }}
           placeholder="Type a message..."
-          className="retro-input me-2"
+          className="retro-input me-2 mt-3"
+          style={{width:"100%"}}
         />
-        <button className="retro-button" onClick={sendMessage}>
+        <button className="retro-button mt-3" onClick={sendMessage}>
           Send
         </button>
       </div>
