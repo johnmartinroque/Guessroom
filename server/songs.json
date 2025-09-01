@@ -16,5 +16,29 @@
     "title": "Dunk With A Smile",
     "artist": "James",
     "albumArt": "https://i.scdn.co/image/ab67616d0000b273abb1bb6f26b1b469221dde12"
+  },
+  {
+    "filename": "song4.mp3",
+    "title": "Die With A Smile",
+    "artist": "Lady Gaga",
+    "albumArt": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvhcYskQHOxAqogCcgaOSczW9D3l6Nd4riLQ&s"
+  },
+  {
+    "filename": "song5.mp3",
+    "title": "Birds Of A Feather",
+    "artist": "Billie Eilish",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0271d62ea7ea8a5be92d3c1f62"
+  },
+  {
+    "filename": "song6.mp3",
+    "title": "Good Luck, Babe!",
+    "artist": "Chappell Roan",
+    "albumArt": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToNZ13a9voTYeCV07LJiweLEnyDSNCeQC2qw&s"
+  },
+  {
+    "filename": "song7.mp3",
+    "title": "Not Like Us",
+    "artist": "Kendrick Lamar",
+    "albumArt": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQftzsgWAQcDjAWY7GSVJgyjttELdiR6NLQ9A&s"
   }
 ]
