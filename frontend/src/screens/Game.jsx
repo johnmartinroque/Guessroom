@@ -19,9 +19,8 @@ function Game() {
   const [round, setRound] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
   const [guessedUsers, setGuessedUsers] = useState([]);
+  const [hasGuessedCorrectly, setHasGuessedCorrectly] = useState(false); // ✅ new state
   const audioRef = useRef(null);
-
-  // Ref for the feedback container for auto-scroll
   const feedbackRef = useRef(null);
 
   useEffect(() => {
@@ -43,8 +42,9 @@ function Game() {
 
       if (action === "play") {
         setCurrentSong({ title, albumArt, filename });
-        setGuessedUsers([]); // reset guessed users for new song
+        setGuessedUsers([]);
         setFeedback([]);
+        setHasGuessedCorrectly(false); // 🔓 reset for new song
         audioRef.current.src = `${process.env.REACT_APP_SOCKET_URL}/music/${filename}`;
         audioRef.current.play().catch((err) => console.log(err));
       } else if (action === "stop") {
@@ -65,6 +65,7 @@ function Game() {
       setScores(scores);
       setGuessedUsers((prev) => [...prev, user]);
       if (user === username) {
+        setHasGuessedCorrectly(true); // 🔒 disable input for this round
         setFeedback((prev) => [...prev, "✅ You guessed correctly!"]);
       } else {
         setFeedback((prev) => [...prev, `✅ ${user} has guessed correctly`]);
@@ -95,7 +96,6 @@ function Game() {
     };
   }, [lobbyName, username, navigate]);
 
-  // Auto-scroll feedback div when feedback changes
   useEffect(() => {
     if (feedbackRef.current) {
       feedbackRef.current.scrollTop = feedbackRef.current.scrollHeight;
@@ -104,7 +104,7 @@ function Game() {
 
   const submitAnswer = (e) => {
     e.preventDefault();
-    if (!answer.trim()) return;
+    if (!answer.trim() || hasGuessedCorrectly) return;
     socket.emit("submitAnswer", { lobbyName, username, answer });
     setAnswer("");
   };
@@ -148,6 +148,7 @@ function Game() {
       <div className="game-container">
         <h1 className="retro-glitch-title mb-2">Lobby: {lobbyName}</h1>
         <h3 className="retro-glitch-text">Lobby Music</h3>
+
         {currentSong ? (
           <div className="d-flex flex-column align-items-center">
             <p className="retro-glitch-text">
@@ -189,9 +190,14 @@ function Game() {
                 type="text"
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
+                disabled={hasGuessedCorrectly}
               />
 
-              <button className="retro-button" type="submit">
+              <button
+                className="retro-button"
+                type="submit"
+                disabled={hasGuessedCorrectly}
+              >
                 Submit
               </button>
             </div>
@@ -202,7 +208,7 @@ function Game() {
           <div
             ref={feedbackRef}
             style={{
-              maxHeight: "3.2em", // approx 2 lines of 1.6em each
+              maxHeight: "3.2em", // ~2 lines
               overflow: "hidden",
               display: "flex",
               flexDirection: "column",
