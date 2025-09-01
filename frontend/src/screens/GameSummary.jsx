@@ -12,17 +12,17 @@ function GameSummary() {
   }
 
   return (
-    <div className="container text-center p-4">
-      <h1 className="mb-3">🏆 Game Summary - {lobbyName}</h1>
-      <h2>Top 3 Players</h2>
+    <div className="container text-center">
+      <h1 className="mb-3 retro-glitch-title">Winner - {lobbyName}</h1>
+      <h2 className="retro-glitch-text">Top 3 Players</h2>
       <ol>
         {topPlayers.map((player, idx) => (
-          <li key={idx}>
+          <li className="retro-glitch-text" key={idx}>
             {player.username} — <strong>{player.score} pts</strong>
           </li>
         ))}
       </ol>
-      <button className="btn btn-primary mt-3" onClick={() => navigate("/")}>
+      <button className="retro-button mt-3" onClick={() => navigate("/")}>
         Back to Lobby
       </button>
     </div>
