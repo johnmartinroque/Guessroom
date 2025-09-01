@@ -6,6 +6,8 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 
+app.use("/music", express.static("music"));
+
 const server = http.createServer(app); // wrap express server with http
 const io = new Server(server, {
   cors: {
@@ -15,6 +17,7 @@ const io = new Server(server, {
 });
 
 let lobbyUsers = []; // in-memory users
+let currentSong = null;
 
 io.on("connection", (socket) => {
   console.log("🟢 A user connected:", socket.id);
@@ -31,6 +34,17 @@ io.on("connection", (socket) => {
   socket.on("leaveLobby", (username) => {
     lobbyUsers = lobbyUsers.filter((u) => u !== username);
     io.emit("lobbyUpdate", lobbyUsers);
+  });
+
+  socket.on("playMusic", (song) => {
+    currentSong = song;
+    io.emit("playMusic", song); // broadcast to all
+  });
+
+  // 🔹 Handle music stop event
+  socket.on("stopMusic", () => {
+    currentSong = null;
+    io.emit("stopMusic");
   });
 
   // Handle disconnect
