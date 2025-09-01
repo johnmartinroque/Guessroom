@@ -33,24 +33,24 @@ function JoinLobby() {
   };
 
   return (
-    <div className="container text-center p-4">
-      <h1 className="mb-4">🎮 Live Lobby</h1>
+    <div className="container text-center">
+      <h1 className="retro-glitch-title">GuessRoom</h1>
 
       <input
         type="text"
         placeholder="Enter Lobby Name"
         value={lobbyName}
         onChange={(e) => setLobbyName(e.target.value)}
-        className="form-control d-inline w-auto me-2"
+        className="retro-input mt-5"
       />
       <input
         type="text"
         placeholder="Enter your username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        className="form-control d-inline w-auto me-2"
+        className="retro-input"
       />
-      <button onClick={joinLobby} className="btn btn-primary">
+      <button onClick={joinLobby} className="retro-button mt-5">
         Join Lobby
       </button>
 

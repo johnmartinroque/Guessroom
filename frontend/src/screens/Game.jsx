@@ -106,7 +106,7 @@ function Game() {
   };
   const leaveLobby = () => {
     socket.emit("leaveLobby", { lobbyName, username });
-    navigate("/join");
+    navigate("/");
   };
 
   const voteSkip = () => {
