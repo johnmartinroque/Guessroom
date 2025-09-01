@@ -4,10 +4,15 @@ import { Server } from "socket.io";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
 
 // Needed to use __dirname in ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+const songs = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "songs.json"), "utf-8")
+);
 
 const app = express();
 app.use(cors());
@@ -34,7 +39,6 @@ io.on("connection", (socket) => {
     if (!lobbies[lobbyName]) {
       lobbies[lobbyName] = {
         users: [],
-        buttonColor: "secondary",
         currentSong: null,
       };
     }
@@ -45,9 +49,6 @@ io.on("connection", (socket) => {
 
     // Send updated user list to the lobby
     io.to(lobbyName).emit("lobbyUpdate", lobbies[lobbyName].users);
-
-    // Send current state (button + music) to the new user only
-    socket.emit("buttonColorUpdate", lobbies[lobbyName].buttonColor);
 
     if (lobbies[lobbyName].currentSong) {
       socket.emit("musicUpdate", {
@@ -75,20 +76,15 @@ io.on("connection", (socket) => {
     }
   });
 
-  // Toggle button (per lobby)
-  socket.on("toggleButton", ({ lobbyName, color }) => {
-    if (lobbies[lobbyName]) {
-      lobbies[lobbyName].buttonColor = color;
-      io.to(lobbyName).emit("buttonColorUpdate", color);
-    }
-  });
-
   // Music play (per lobby)
-  socket.on("playMusic", ({ lobbyName, songName }) => {
+  socket.on("playMusic", ({ lobbyName }) => {
     if (lobbies[lobbyName]) {
-      lobbies[lobbyName].currentSong = songName;
+      // Pick a random song from JSON
+      const randomSong = songs[Math.floor(Math.random() * songs.length)];
+
+      lobbies[lobbyName].currentSong = randomSong;
       io.to(lobbyName).emit("musicUpdate", {
-        song: songName,
+        ...randomSong,
         action: "play",
       });
     }

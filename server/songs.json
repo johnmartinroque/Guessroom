@@ -1,0 +1,20 @@
+[
+  {
+    "filename": "song1.mp3",
+    "title": "Lebron Lebron Lebron James",
+    "artist": "Lebron",
+    "albumArt": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxaeXXfC_OeJlbtsGK226y0s289iaoe42m8g&s"
+  },
+  {
+    "filename": "song2.mp3",
+    "title": "Man On The Lakers",
+    "artist": "Raymone",
+    "albumArt": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFQFOdGlFCqXVVlhKcJSTvllLHPgOco7CM2A&s"
+  },
+  {
+    "filename": "song3.mp3",
+    "title": "Dunk With A Smile",
+    "artist": "James",
+    "albumArt": "https://i.scdn.co/image/ab67616d0000b273abb1bb6f26b1b469221dde12"
+  }
+]
