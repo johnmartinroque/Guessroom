@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import JoinLobby from "./screens/JoinLobby";
 import Home from "./screens/Home";
@@ -6,9 +6,17 @@ import Header from "./components/Header";
 import Game from "./screens/Game";
 import GameSummary from "./screens/GameSummary";
 import "./App.css"
+import LoadingScreen from './components/LoadingScreen';
+
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
   return (
-    <div>
+    <>
+      {isLoading ? (
+        <LoadingScreen onLoaded={() => setIsLoading(false)} />
+      ) : (
+      <div>
       <Router>
         {/* <Header /> */}
         <Routes>
@@ -19,6 +27,8 @@ function App() {
         </Routes>
       </Router>
     </div>
+      )}
+    </>
   );
 }
 

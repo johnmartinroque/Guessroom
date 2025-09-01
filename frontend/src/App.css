@@ -1,6 +1,194 @@
 body {
-  padding: 4rem;
-  text-align: center;
-  background-color: red !important;
+  overflow: hidden;
+  background-color: #0d0d0d !important;
+  color: #F2F2F2;
+  font-family: 'Press Start 2P', cursive;
+  background-image: repeating-linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.02) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  background-size: cover;
+  overflow-x: hidden;
 }
 
+.retro-glitch-title {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 2.5rem;
+  color: #39FF14;
+  text-align: center;
+  letter-spacing: 0.1em;
+  position: relative;
+  text-transform: uppercase;
+  animation: glitch 1.2s infinite;
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 2px 0 #ff00c8, -2px 0 #00FFF7;
+  }
+  25% {
+    text-shadow: -2px -2px #00FFF7, 2px 2px #ff00c8;
+  }
+  50% {
+    text-shadow: 2px -2px #ff00c8, -2px 2px #00FFF7;
+  }
+  75% {
+    text-shadow: -1px 1px #ff00c8, 1px -1px #00FFF7;
+  }
+  100% {
+    text-shadow: 2px 0 #ff00c8, -2px 0 #00FFF7;
+  }
+}
+
+.retro-button {
+  font-family: 'Press Start 2P', cursive;
+  background: transparent;
+  color: #00FFF7;
+  border: 2px solid #FF00C8;
+  padding: 1rem 2rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px #FF00C8;
+  position: relative;
+  z-index: 1;
+}
+
+.retro-button:hover {
+  background: #FF00C8;
+  color: #0d0d0d;
+  box-shadow: 0 0 12px #FF00C8;
+}
+
+.retro-input {
+  font-family: 'Press Start 2P', cursive;
+  background: #0d0d0d;
+  color: #00FFF7;
+  border: 2px solid #00FFF7;
+  padding: 1rem;
+  font-size: 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 1rem;
+  outline: none;
+  transition: box-shadow 0.3s ease;
+}
+
+.retro-input:focus {
+  box-shadow: 0 0 10px #00FFF7;
+  border-color: #FF00C8;
+}
+
+.flicker {
+  animation: flicker 2s infinite alternate;
+}
+
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+  }
+
+  20%, 24%, 55% {
+    opacity: 0.4;
+  }
+}
+
+.loading-container {
+  height: 100vh;
+  background-color: #0d0d0d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: loadingFadeIn 0.8s ease forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.loading-container.exit {
+  animation: glitchExit 0.8s ease forwards;
+}
+
+.glitch-loader {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 2rem;
+  color: #39FF14;
+  text-align: center;
+  letter-spacing: 0.1em;
+  animation: glitchAnim 1.2s infinite;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 10;
+}
+
+/* Glitch text animation */
+@keyframes glitchAnim {
+  0% {
+    text-shadow: 2px 0 #ff00c8, -2px 0 #00FFF7;
+    opacity: 1;
+  }
+  25% {
+    text-shadow: -2px -2px #00FFF7, 2px 2px #ff00c8;
+    opacity: 0.8;
+  }
+  50% {
+    text-shadow: 2px -2px #ff00c8, -2px 2px #00FFF7;
+    opacity: 0.6;
+  }
+  75% {
+    text-shadow: -1px 1px #ff00c8, 1px -1px #00FFF7;
+    opacity: 0.8;
+  }
+  100% {
+    text-shadow: 2px 0 #ff00c8, -2px 0 #00FFF7;
+    opacity: 1;
+  }
+}
+
+/* Fade in on mount */
+@keyframes loadingFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Glitchy exit animation on whole container */
+@keyframes glitchExit {
+  0% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    transform: translate(0, 0) skew(0deg);
+    filter: none;
+  }
+  20% {
+    clip-path: inset(20% 0 70% 0);
+    transform: translate(-10px, -5px) skew(-5deg);
+    filter: contrast(1.2) brightness(1.1);
+  }
+  40% {
+    clip-path: inset(40% 0 40% 0);
+    transform: translate(10px, 5px) skew(5deg);
+    filter: contrast(1.5) brightness(1.3);
+  }
+  60% {
+    clip-path: inset(10% 0 80% 0);
+    transform: translate(-8px, 6px) skew(-8deg);
+    filter: contrast(1.4) brightness(1.2);
+  }
+  80% {
+    clip-path: inset(0 0 70% 0);
+    transform: translate(5px, -4px) skew(6deg);
+    filter: contrast(1.3) brightness(1.1);
+  }
+  100% {
+    opacity: 0;
+    clip-path: inset(100% 0 0 0);
+    transform: translate(0, 0) skew(0deg);
+    filter: none;
+  }
+}
