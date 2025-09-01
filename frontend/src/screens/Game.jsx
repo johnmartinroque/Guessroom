@@ -206,24 +206,24 @@ function Game() {
 
         {feedback.length > 0 && (
           <div
-            ref={feedbackRef}
-            style={{
-              maxHeight: "3.2em", // ~2 lines
-              overflow: "hidden",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            {feedback.slice(-5).map((msg, idx) => (
-              <p
-                className="retro-glitch-text"
-                key={idx}
-                style={{ margin: 0, lineHeight: "1.6em" }}
-              >
-                {msg}
-              </p>
-            ))}
-          </div>
+  ref={feedbackRef}
+  style={{
+    maxHeight: "3.2em",
+    overflow: "hidden",
+    display: "block",
+    marginTop: "0.5rem", // add some spacing if needed
+  }}
+>
+  {feedback.slice(-5).map((msg, idx) => (
+    <p
+      className="retro-glitch-text"
+      key={idx}
+      style={{ margin: 0, lineHeight: "1.6em" }}
+    >
+      {msg}
+    </p>
+  ))}
+</div>
         )}
 
         {currentSong && (
