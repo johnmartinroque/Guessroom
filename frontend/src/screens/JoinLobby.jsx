@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
-import LobbyList from "../components/LobbyList";
 
 const socket = io(process.env.REACT_APP_SOCKET_URL);
 
@@ -24,12 +23,14 @@ function JoinLobby() {
   const joinLobby = () => {
     if (!username || !lobbyName) return;
 
-    // Emit joinLobby to server
-    socket.emit("joinLobby", { lobbyName, username });
+    // Normalize inputs before emitting
+    const normalizedLobbyName = lobbyName.toLowerCase();
+    const normalizedUsername = username.toLowerCase();
 
-    // Navigate only if no error (handled in server)
+    socket.emit("joinLobby", { lobbyName: normalizedLobbyName, username: normalizedUsername });
+
     socket.once("lobbyUpdate", () => {
-      navigate("/game", { state: { lobbyName, username } });
+      navigate("/game", { state: { lobbyName: normalizedLobbyName, username: normalizedUsername } });
     });
   };
 
@@ -41,14 +42,16 @@ function JoinLobby() {
         type="text"
         placeholder="Enter Lobby Name"
         value={lobbyName}
-        onChange={(e) => setLobbyName(e.target.value.toLowerCase())}
+        maxLength={15} // limit input to 15 chars
+        onChange={(e) => setLobbyName(e.target.value.toLowerCase().slice(0, 15))}
         className="retro-input mt-5"
       />
       <input
         type="text"
         placeholder="Enter your username"
         value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        maxLength={20} // optional: add a limit for username too
+        onChange={(e) => setUsername(e.target.value.slice(0, 20))} // allow any capitalization here
         className="retro-input mt-3"
       />
       <button onClick={joinLobby} className="retro-button mt-5">
@@ -56,7 +59,6 @@ function JoinLobby() {
       </button>
 
       {error && <p className="text-danger mt-2">{error}</p>}
-      <LobbyList username={username} navigate={navigate} />
     </div>
   );
 }

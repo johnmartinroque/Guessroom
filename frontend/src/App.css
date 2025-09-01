@@ -269,6 +269,7 @@ body {
   border-radius: 0.3rem;
   width: 100%;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 .chat-container {
   display: flex;
