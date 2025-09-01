@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import JoinLobby from "./screens/JoinLobby";
-import Header from "./components/Header";
 import Game from "./screens/Game";
 import GameSummary from "./screens/GameSummary";
 import "./App.css"
