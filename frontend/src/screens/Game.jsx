@@ -129,7 +129,7 @@ function Game() {
           ))}
         </ul>
 
-        <button onClick={leaveLobby} className="retro-button mt-3">
+        <button onClick={leaveLobby} className="retro-button mt-3 w-100">
           Leave Lobby
         </button>
       </div>
@@ -139,14 +139,19 @@ function Game() {
         <h1 className="retro-glitch-title mb-2">Lobby: {lobbyName}</h1>
         <h3 className="retro-glitch-text">Lobby Music</h3>
         {currentSong ? (
-          <div>
+          <div className="d-flex flex-column justify-center">
             <p className="retro-glitch-text">
               Now Playing: {currentSong.title} by ???
             </p>
             <img
               src={currentSong.albumArt}
               alt={currentSong.title}
-              width="150"
+              style={{
+                height: "300px",
+                width: "auto",
+                objectFit: "cover",
+                display: "block"
+              }}
             />
           </div>
         ) : (
@@ -162,17 +167,23 @@ function Game() {
         )}
 
         {gameStarted && (
-          <form onSubmit={submitAnswer} className="mt-3">
-            <label className="retro-glitch-text">Guess the artist</label>
-            <input
-              className="retro-input"
-              type="text"
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-            />
-            <button className="retro-button" type="submit">
-              Submit
-            </button>
+          <form onSubmit={submitAnswer} className="mt-3 w-100">
+            <div className="d-flex flex-wrap gap-2 w-100">
+              <label className="retro-glitch-text align-self-center">
+                Guess the artist
+              </label>
+              
+              <input
+                className="retro-input flex-grow-1"
+                type="text"
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+              />
+
+              <button className="retro-button" type="submit">
+                Submit
+              </button>
+            </div>
           </form>
         )}
 

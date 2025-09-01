@@ -45,7 +45,7 @@ function ChatFinished({ socket, lobbyName, username, guessedUsers }) {
   if (!hasFinished) return null; // hide if user hasn't finished
 
   return (
-    <div className="chat-container p-2">
+    <div className="chat-container">
       <h1 className="retro-glitch-text text-start">Finished Chat</h1>
       <div
         className="chat-box"

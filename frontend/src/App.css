@@ -1,5 +1,5 @@
 body {
-  /* overflow: hidden; */
+  overflow: hidden;
   background-color: #0d0d0d !important;
   color: #F2F2F2;
   font-family: 'Press Start 2P', cursive;
@@ -241,7 +241,7 @@ body {
   flex: 2;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
   background-color: rgba(48, 48, 48, 0.2);
   padding: 1.2rem;
   height: 95vh;
