@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 
-const socket = io("http://192.168.100.33:5000");
+const socket = io(process.env.REACT_APP_SOCKET_URL);
 
 function Game() {
   const { state } = useLocation();
@@ -40,7 +40,7 @@ function Game() {
         setCurrentSong({ title, albumArt, filename });
         setGuessedUsers([]); // reset guessed users for new song
         setFeedback([]);
-        audioRef.current.src = `http://192.168.100.33:5000/music/${filename}`;
+        audioRef.current.src = `${process.env.REACT_APP_SOCKET_URL}/music/${filename}`;
         audioRef.current.play().catch((err) => console.log(err));
       } else if (action === "stop") {
         setCurrentSong(null);
