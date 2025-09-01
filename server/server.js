@@ -43,6 +43,7 @@ io.on("connection", (socket) => {
         currentSong: null,
         round: 0,
         guessed: [],
+        playedSongs: [],
         skipVotes: [],
       };
     }
@@ -153,14 +154,30 @@ io.on("connection", (socket) => {
   });
 
   function playRandomSong(lobbyName) {
-    const randomSong = songs[Math.floor(Math.random() * songs.length)];
-    lobbies[lobbyName].currentSong = randomSong;
-    lobbies[lobbyName].guessed = [];
-    lobbies[lobbyName].skipVotes = [];
+    const lobby = lobbies[lobbyName];
+    if (!lobby) return;
+
+    // Filter songs that haven't been played yet
+    const availableSongs = songs.filter(
+      (s) => !lobby.playedSongs.includes(s.filename)
+    );
+
+    // If all songs played, reset the list
+    if (availableSongs.length === 0) {
+      lobby.playedSongs = [];
+    }
+
+    const randomSong =
+      availableSongs[Math.floor(Math.random() * availableSongs.length)];
+
+    lobby.currentSong = randomSong;
+    lobby.guessed = [];
+    lobby.skipVotes = [];
+    lobby.playedSongs.push(randomSong.filename); // mark as played
 
     io.to(lobbyName).emit("musicUpdate", {
       ...randomSong,
-      round: lobbies[lobbyName].round,
+      round: lobby.round,
       action: "play",
     });
   }
