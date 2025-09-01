@@ -1,31 +1,42 @@
-// Game.jsx
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 
-const socket = io("http://192.168.100.33:5000"); // adjust IP if needed
+const socket = io("http://192.168.100.33:5000");
 
 function Game() {
+  const [answer, setAnswer] = useState("");
   const { state } = useLocation();
   const navigate = useNavigate();
   const { lobbyName, username } = state || {};
 
   const [users, setUsers] = useState([]);
+  const [scores, setScores] = useState({});
 
   const [currentSong, setCurrentSong] = useState(null);
+  const [feedback, setFeedback] = useState("");
   const audioRef = useRef(null);
+
+  const submitAnswer = (e) => {
+    e.preventDefault();
+    if (!answer.trim()) return;
+    socket.emit("submitAnswer", { lobbyName, username, answer });
+    setAnswer("");
+  };
 
   useEffect(() => {
     if (!lobbyName || !username) {
-      navigate("/join"); // redirect if no info
+      navigate("/join");
       return;
     }
 
-    // Join lobby
     socket.emit("joinLobby", { lobbyName, username });
 
-    // Listeners
-    socket.on("lobbyUpdate", (lobbyUsers) => setUsers(lobbyUsers));
+    socket.on("lobbyUpdate", ({ users, scores }) => {
+      setUsers(users);
+      setScores(scores);
+    });
+
     socket.on(
       "musicUpdate",
       ({ title, artist, albumArt, filename, action }) => {
@@ -41,11 +52,21 @@ function Game() {
       }
     );
 
+    socket.on("correctAnswer", ({ username, answer, scores }) => {
+      setScores(scores);
+      setFeedback(`✅ ${username} guessed correctly: ${answer}`);
+    });
+
+    socket.on("wrongAnswer", ({ answer }) => {
+      setFeedback(`❌ Wrong guess: ${answer}`);
+    });
+
     return () => {
       socket.emit("leaveLobby", { lobbyName, username });
       socket.off("lobbyUpdate");
-
       socket.off("musicUpdate");
+      socket.off("correctAnswer");
+      socket.off("wrongAnswer");
     };
   }, [lobbyName, username, navigate]);
 
@@ -72,18 +93,17 @@ function Game() {
       <h2>Current Users:</h2>
       <ul className="list-unstyled">
         {users.map((user, idx) => (
-          <li key={idx}>{user}</li>
+          <li key={idx}>
+            {user} — <strong>{scores[user] || 0} pts</strong>
+          </li>
         ))}
       </ul>
 
-      {/* 🎵 Music Controls */}
       <div className="mt-4">
         <h3>Lobby Music</h3>
         {currentSong ? (
           <div>
-            <p>
-              Now Playing: {currentSong.title} by {currentSong.artist}
-            </p>
+            <p>Now Playing: {currentSong.title} by ???</p>
             <img
               src={currentSong.albumArt}
               alt={currentSong.title}
@@ -99,6 +119,19 @@ function Game() {
         <button className="btn btn-danger" onClick={stopMusic}>
           ⏹ Stop
         </button>
+
+        <form onSubmit={submitAnswer} className="mt-3">
+          <label>Guess the artist</label>
+          <input
+            type="text"
+            value={answer}
+            onChange={(e) => setAnswer(e.target.value)}
+          />
+          <button type="submit">Submit</button>
+        </form>
+
+        {feedback && <p className="mt-2">{feedback}</p>}
+
         <audio ref={audioRef} controls hidden />
       </div>
     </div>

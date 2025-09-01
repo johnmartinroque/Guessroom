@@ -40,15 +40,20 @@ io.on("connection", (socket) => {
       lobbies[lobbyName] = {
         users: [],
         currentSong: null,
+        scores: {},
       };
     }
 
     if (!lobbies[lobbyName].users.includes(username)) {
       lobbies[lobbyName].users.push(username);
+      lobbies[lobbyName].scores[username] = 0;
     }
 
     // Send updated user list to the lobby
-    io.to(lobbyName).emit("lobbyUpdate", lobbies[lobbyName].users);
+    io.to(lobbyName).emit("lobbyUpdate", {
+      users: lobbies[lobbyName].users,
+      scores: lobbies[lobbyName].scores,
+    });
 
     if (lobbies[lobbyName].currentSong) {
       socket.emit("musicUpdate", {
@@ -66,8 +71,13 @@ io.on("connection", (socket) => {
       lobbies[lobbyName].users = lobbies[lobbyName].users.filter(
         (u) => u !== username
       );
+      delete lobbies[lobbyName].scores[username];
 
-      io.to(lobbyName).emit("lobbyUpdate", lobbies[lobbyName].users);
+      // ✅ always send object with both users and scores
+      io.to(lobbyName).emit("lobbyUpdate", {
+        users: lobbies[lobbyName].users,
+        scores: lobbies[lobbyName].scores,
+      });
 
       // Clean up empty lobbies
       if (lobbies[lobbyName].users.length === 0) {
@@ -98,6 +108,24 @@ io.on("connection", (socket) => {
         song: null,
         action: "stop",
       });
+    }
+  });
+
+  socket.on("submitAnswer", ({ lobbyName, username, answer }) => {
+    if (lobbies[lobbyName] && lobbies[lobbyName].currentSong) {
+      const correctArtist = lobbies[lobbyName].currentSong.artist.toLowerCase();
+      const guess = answer.trim().toLowerCase();
+
+      if (guess === correctArtist) {
+        lobbies[lobbyName].scores[username] += 1; // add point
+        io.to(lobbyName).emit("correctAnswer", {
+          username,
+          answer,
+          scores: lobbies[lobbyName].scores,
+        });
+      } else {
+        socket.emit("wrongAnswer", { answer }); // feedback just to user
+      }
     }
   });
 
