@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
+import ChatFinished from "../components/ChatFinished";
+import ChatOnGoing from "../components/ChatOnGoing";
 
 const socket = io(process.env.REACT_APP_SOCKET_URL);
 
@@ -180,6 +182,18 @@ function Game() {
 
         <audio ref={audioRef} controls hidden />
       </div>
+      <ChatOnGoing
+        socket={socket}
+        lobbyName={lobbyName}
+        username={username}
+        guessedUsers={guessedUsers}
+      />
+      <ChatFinished
+        socket={socket}
+        lobbyName={lobbyName}
+        username={username}
+        guessedUsers={guessedUsers}
+      />
     </div>
   );
 }

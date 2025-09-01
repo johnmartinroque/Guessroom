@@ -214,6 +214,33 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("🔴 A user disconnected:", socket.id);
   });
+
+  socket.on("sendOngoingMessage", ({ lobbyName, username, message }) => {
+    const lobby = lobbies[lobbyName];
+    if (!lobby) return;
+
+    // Only allow users who haven't guessed correctly yet
+    if (!lobby.guessed.includes(username)) {
+      io.to(lobbyName).emit("receiveOngoingMessage", {
+        username,
+        message,
+      });
+    }
+  });
+
+  // Handle finished chat
+  socket.on("sendFinishedMessage", ({ lobbyName, username, message }) => {
+    const lobby = lobbies[lobbyName];
+    if (!lobby) return;
+
+    // Only allow users who have guessed correctly
+    if (lobby.guessed.includes(username)) {
+      io.to(lobbyName).emit("receiveFinishedMessage", {
+        username,
+        message,
+      });
+    }
+  });
 });
 
 // Simple test route
