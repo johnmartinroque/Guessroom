@@ -2,10 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
 import SharedButton from "./SharedButton";
 
-const socket = io("http://localhost:5000");
+const socket = io("http://192.168.100.33:5000"); // change IP to your PC's LAN IP
 
 function App() {
   const [username, setUsername] = useState("");
+  const [lobbyName, setLobbyName] = useState("");
+
   const [users, setUsers] = useState([]);
   const [joined, setJoined] = useState(false);
   const [buttonColor, setButtonColor] = useState("secondary");
@@ -14,25 +16,23 @@ function App() {
   const audioRef = useRef(null);
 
   useEffect(() => {
-    socket.on("lobbyUpdate", (lobbyUsers) => setUsers(lobbyUsers));
-    socket.on("buttonColorUpdate", (color) => setButtonColor(color));
-
-    // 🔹 Music events
-    socket.on("playMusic", (song) => {
-      setCurrentSong(song);
-      if (audioRef.current) {
-        audioRef.current.src = `http://localhost:5000/music/${song}`;
-        audioRef.current
-          .play()
-          .catch((err) =>
-            console.log("Autoplay blocked, user interaction needed:", err)
-          );
-      }
+    socket.on("lobbyUpdate", (lobbyUsers) => {
+      setUsers(lobbyUsers);
     });
 
-    socket.on("stopMusic", () => {
-      setCurrentSong(null);
-      if (audioRef.current) {
+    socket.on("buttonColorUpdate", (color) => {
+      setButtonColor(color);
+    });
+
+    socket.on("musicUpdate", ({ song, action }) => {
+      if (action === "play") {
+        setCurrentSong(song);
+        audioRef.current.src = `http://192.168.100.33:5000/music/${song}`;
+        audioRef.current
+          .play()
+          .catch((err) => console.log("⚠️ Play blocked:", err));
+      } else if (action === "stop") {
+        setCurrentSong(null);
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
       }
@@ -41,30 +41,29 @@ function App() {
     return () => {
       socket.off("lobbyUpdate");
       socket.off("buttonColorUpdate");
-      socket.off("playMusic");
-      socket.off("stopMusic");
+      socket.off("musicUpdate");
     };
   }, []);
 
   const joinLobby = () => {
-    if (!username) return;
-    socket.emit("joinLobby", username);
+    if (!username || !lobbyName) return;
+    socket.emit("joinLobby", { lobbyName, username });
     setJoined(true);
   };
 
   const leaveLobby = () => {
-    socket.emit("leaveLobby", username);
+    socket.emit("leaveLobby", { lobbyName, username });
     setJoined(false);
     setUsername("");
+    setLobbyName("");
   };
 
-  // 🔹 Music controls
-  const handlePlayMusic = () => {
-    socket.emit("playMusic", "lebron.mp3"); // tell everyone to play
+  const playMusic = () => {
+    socket.emit("playMusic", { lobbyName, songName: "lebron.mp3" });
   };
 
-  const handleStopMusic = () => {
-    socket.emit("stopMusic");
+  const stopMusic = () => {
+    socket.emit("stopMusic", { lobbyName });
   };
 
   return (
@@ -73,6 +72,13 @@ function App() {
 
       {!joined ? (
         <div className="mb-3">
+          <input
+            type="text"
+            placeholder="Enter Lobby Name"
+            value={lobbyName}
+            onChange={(e) => setLobbyName(e.target.value)}
+            className="form-control d-inline w-auto me-2"
+          />
           <input
             type="text"
             placeholder="Enter your username"
@@ -102,23 +108,21 @@ function App() {
         <SharedButton socket={socket} color={buttonColor} />
       </div>
 
-      {/* 🔹 Music Controls */}
-      <div className="mt-5">
-        <h3>🎵 Lobby Music</h3>
+      {/* 🎵 Music Controls */}
+      <div className="mt-4">
+        <h3>Lobby Music</h3>
         {currentSong ? (
           <p>Now Playing: {currentSong}</p>
         ) : (
           <p>No song playing</p>
         )}
-        <button onClick={handlePlayMusic} className="btn btn-success me-2">
-          ▶ Play Music
+        <button className="btn btn-success me-2" onClick={playMusic}>
+          ▶ Play
         </button>
-        <button onClick={handleStopMusic} className="btn btn-danger">
-          ⏹ Stop Music
+        <button className="btn btn-danger" onClick={stopMusic}>
+          ⏹ Stop
         </button>
-
-        {/* Hidden audio element */}
-        <audio ref={audioRef} />
+        <audio ref={audioRef} controls hidden />
       </div>
     </div>
   );

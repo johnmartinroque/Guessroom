@@ -2,87 +2,122 @@ import express from "express";
 import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Needed to use __dirname in ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
 
-app.use("/music", express.static("music"));
+// Serve static music files
+app.use("/music", express.static(path.join(__dirname, "music")));
 
-const server = http.createServer(app); // wrap express server with http
+const server = http.createServer(app);
 const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000", // your React frontend
-    methods: ["GET", "POST"],
-  },
+  cors: { origin: "*" }, // allow frontend from any IP
 });
 
-let lobbyUsers = []; // in-memory users
-let currentSong = null;
+// In-memory state per lobby
+// { lobbyName: { users: [], buttonColor: "secondary", currentSong: null } }
+let lobbies = {};
 
 io.on("connection", (socket) => {
   console.log("🟢 A user connected:", socket.id);
 
-  // Join lobby
-  socket.on("joinLobby", (username) => {
-    if (!lobbyUsers.includes(username)) {
-      lobbyUsers.push(username);
+  // Join a lobby
+  socket.on("joinLobby", ({ lobbyName, username }) => {
+    socket.join(lobbyName);
+
+    if (!lobbies[lobbyName]) {
+      lobbies[lobbyName] = {
+        users: [],
+        buttonColor: "secondary",
+        currentSong: null,
+      };
     }
-    io.emit("lobbyUpdate", lobbyUsers); // send updated list to everyone
+
+    if (!lobbies[lobbyName].users.includes(username)) {
+      lobbies[lobbyName].users.push(username);
+    }
+
+    // Send updated user list to the lobby
+    io.to(lobbyName).emit("lobbyUpdate", lobbies[lobbyName].users);
+
+    // Send current state (button + music) to the new user only
+    socket.emit("buttonColorUpdate", lobbies[lobbyName].buttonColor);
+
+    if (lobbies[lobbyName].currentSong) {
+      socket.emit("musicUpdate", {
+        song: lobbies[lobbyName].currentSong,
+        action: "play",
+      });
+    }
   });
 
-  // Leave lobby
-  socket.on("leaveLobby", (username) => {
-    lobbyUsers = lobbyUsers.filter((u) => u !== username);
-    io.emit("lobbyUpdate", lobbyUsers);
+  // Leave a lobby
+  socket.on("leaveLobby", ({ lobbyName, username }) => {
+    socket.leave(lobbyName);
+
+    if (lobbies[lobbyName]) {
+      lobbies[lobbyName].users = lobbies[lobbyName].users.filter(
+        (u) => u !== username
+      );
+
+      io.to(lobbyName).emit("lobbyUpdate", lobbies[lobbyName].users);
+
+      // Clean up empty lobbies
+      if (lobbies[lobbyName].users.length === 0) {
+        delete lobbies[lobbyName];
+      }
+    }
   });
 
-  socket.on("playMusic", (song) => {
-    currentSong = song;
-    io.emit("playMusic", song); // broadcast to all
+  // Toggle button (per lobby)
+  socket.on("toggleButton", ({ lobbyName, color }) => {
+    if (lobbies[lobbyName]) {
+      lobbies[lobbyName].buttonColor = color;
+      io.to(lobbyName).emit("buttonColorUpdate", color);
+    }
   });
 
-  // 🔹 Handle music stop event
-  socket.on("stopMusic", () => {
-    currentSong = null;
-    io.emit("stopMusic");
+  // Music play (per lobby)
+  socket.on("playMusic", ({ lobbyName, songName }) => {
+    if (lobbies[lobbyName]) {
+      lobbies[lobbyName].currentSong = songName;
+      io.to(lobbyName).emit("musicUpdate", {
+        song: songName,
+        action: "play",
+      });
+    }
+  });
+
+  // Music stop (per lobby)
+  socket.on("stopMusic", ({ lobbyName }) => {
+    if (lobbies[lobbyName]) {
+      lobbies[lobbyName].currentSong = null;
+      io.to(lobbyName).emit("musicUpdate", {
+        song: null,
+        action: "stop",
+      });
+    }
   });
 
   // Handle disconnect
   socket.on("disconnect", () => {
     console.log("🔴 A user disconnected:", socket.id);
-    // (optional) clean up if you want auto-removal
+    // NOTE: Optional – could also auto-remove from lobbies here if you track socket<->username mapping
   });
 });
 
+// Simple test route
 app.get("/", (req, res) => {
-  res.send("✅ Lobby server with Socket.IO is running!");
-});
-
-io.on("connection", (socket) => {
-  console.log("🟢 A user connected:", socket.id);
-
-  // Existing lobby logic...
-  socket.on("joinLobby", (username) => {
-    if (!lobbyUsers.includes(username)) {
-      lobbyUsers.push(username);
-    }
-    io.emit("lobbyUpdate", lobbyUsers);
-  });
-
-  socket.on("leaveLobby", (username) => {
-    lobbyUsers = lobbyUsers.filter((u) => u !== username);
-    io.emit("lobbyUpdate", lobbyUsers);
-  });
-
-  // 🔹 New: handle button color toggle
-  socket.on("toggleButton", (color) => {
-    io.emit("buttonColorUpdate", color); // broadcast to everyone
-  });
-
-  socket.on("disconnect", () => {
-    console.log("🔴 A user disconnected:", socket.id);
-  });
+  res.send("✅ Multi-lobby server with Socket.IO and Music is running!");
 });
 
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+server.listen(PORT, "0.0.0.0", () =>
+  console.log(`🚀 Server running on http://0.0.0.0:${PORT}`)
+);
