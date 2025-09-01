@@ -22,7 +22,10 @@ app.use("/music", express.static(path.join(__dirname, "music")));
 
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: "*" }, // allow frontend from any IP
+  cors: {
+    origin: "https://guessroom.vercel.app", // your deployed frontend URL
+    methods: ["GET", "POST"],
+  },
 });
 
 // In-memory state per lobby
