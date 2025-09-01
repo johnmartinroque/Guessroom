@@ -7,8 +7,8 @@ body {
     180deg,
     rgba(255, 255, 255, 0.02),
     rgba(255, 255, 255, 0.02) 1px,
-    transparent 1px,
-    transparent 3px
+    transparent 5px,
+    transparent 10px
   );
   background-size: cover;
   overflow-x: hidden;
@@ -16,7 +16,7 @@ body {
 
 .retro-glitch-title {
   font-family: 'Press Start 2P', cursive;
-  font-size: 2.5rem;
+  font-size: 6rem;
   color: #39FF14;
   text-align: center;
   letter-spacing: 0.1em;
@@ -127,7 +127,7 @@ body {
   z-index: 10;
 }
 
-/* Glitch text animation */
+
 @keyframes glitchAnim {
   0% {
     text-shadow: 2px 0 #ff00c8, -2px 0 #00FFF7;
@@ -151,13 +151,12 @@ body {
   }
 }
 
-/* Fade in on mount */
+
 @keyframes loadingFadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-/* Glitchy exit animation on whole container */
 @keyframes glitchExit {
   0% {
     opacity: 1;
@@ -191,4 +190,8 @@ body {
     transform: translate(0, 0) skew(0deg);
     filter: none;
   }
+}
+
+.container {
+  padding: 10rem;
 }
