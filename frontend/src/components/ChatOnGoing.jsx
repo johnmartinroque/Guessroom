@@ -51,7 +51,7 @@ function ChatOnGoing({ socket, lobbyName, username, guessedUsers }) {
         className="chat-box"
         style={{
           height: "81vh",
-          overflowY: "auto",
+          overflowY: "hidden",
           display: "flex",
           flexDirection: "column",
         }}

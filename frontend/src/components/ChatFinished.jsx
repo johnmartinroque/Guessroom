@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 
 const socket = io(process.env.REACT_APP_SOCKET_URL);
@@ -6,6 +6,8 @@ const socket = io(process.env.REACT_APP_SOCKET_URL);
 function ChatFinished({ socket, lobbyName, username, guessedUsers }) {
   const [messages, setMessages] = useState([]);
   const [chatInput, setChatInput] = useState("");
+
+  const messagesEndRef = useRef(null);
 
   const hasFinished = guessedUsers.includes(username);
 
@@ -33,20 +35,33 @@ function ChatFinished({ socket, lobbyName, username, guessedUsers }) {
     };
   }, []);
 
+  // Scroll to bottom when new message is added
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   if (!hasFinished) return null; // hide if user hasn't finished
 
   return (
-    <div className="chat-container mt-4 p-2">
-      <h4>Finished Chat</h4>
+    <div className="chat-container border p-2">
+      <h4 className="retro-glitch-text text-start">Finished Chat</h4>
       <div
         className="chat-box"
-        style={{ maxHeight: "200px", overflowY: "auto" }}
+        style={{
+          height: "81vh",
+          overflowY: "hidden",
+          display: "flex",
+          flexDirection: "column",
+        }}
       >
         {messages.map((msg, idx) => (
-          <p className="retro-glitch-text" key={idx}>
+          <p className="retro-glitch-text text-start" key={idx}>
             <strong>{msg.username}:</strong> {msg.message}
           </p>
         ))}
+        <div ref={messagesEndRef} />
       </div>
       <div className="mt-2 d-flex">
         <input
