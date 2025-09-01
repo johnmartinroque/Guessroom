@@ -87,7 +87,6 @@ body {
   box-sizing: border-box;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-top: 1rem;
   outline: none;
   transition: box-shadow 0.3s ease;
   width: 50%;

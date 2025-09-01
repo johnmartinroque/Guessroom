@@ -50,7 +50,7 @@ function JoinLobby() {
         placeholder="Enter your username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        className="retro-input"
+        className="retro-input mt-3"
       />
       <button onClick={joinLobby} className="retro-button mt-5">
         Join Lobby

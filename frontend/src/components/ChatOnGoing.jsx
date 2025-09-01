@@ -75,9 +75,10 @@ function ChatOnGoing({ socket, lobbyName, username, guessedUsers }) {
             }
           }}
           placeholder="Type a message..."
-          className="retro-input me-2"
+          className="retro-input me-2 mt-3"
+          style={{width:"100%"}}
         />
-        <button className="retro-button" onClick={sendMessage}>
+        <button className="retro-button mt-3" onClick={sendMessage}>
           Send
         </button>
       </div>
