@@ -19,7 +19,9 @@ function Game() {
   const [round, setRound] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
   const [guessedUsers, setGuessedUsers] = useState([]);
+  const [hasGuessedCorrectly, setHasGuessedCorrectly] = useState(false); // ✅ new state
   const audioRef = useRef(null);
+  const feedbackRef = useRef(null);
 
   useEffect(() => {
     if (!lobbyName || !username) {
@@ -40,8 +42,9 @@ function Game() {
 
       if (action === "play") {
         setCurrentSong({ title, albumArt, filename });
-        setGuessedUsers([]); // reset guessed users for new song
+        setGuessedUsers([]);
         setFeedback([]);
+        setHasGuessedCorrectly(false); // 🔓 reset for new song
         audioRef.current.src = `${process.env.REACT_APP_SOCKET_URL}/music/${filename}`;
         audioRef.current.play().catch((err) => console.log(err));
       } else if (action === "stop") {
@@ -62,6 +65,7 @@ function Game() {
       setScores(scores);
       setGuessedUsers((prev) => [...prev, user]);
       if (user === username) {
+        setHasGuessedCorrectly(true); // 🔒 disable input for this round
         setFeedback((prev) => [...prev, "✅ You guessed correctly!"]);
       } else {
         setFeedback((prev) => [...prev, `✅ ${user} has guessed correctly`]);
@@ -92,9 +96,15 @@ function Game() {
     };
   }, [lobbyName, username, navigate]);
 
+  useEffect(() => {
+    if (feedbackRef.current) {
+      feedbackRef.current.scrollTop = feedbackRef.current.scrollHeight;
+    }
+  }, [feedback]);
+
   const submitAnswer = (e) => {
     e.preventDefault();
-    if (!answer.trim()) return;
+    if (!answer.trim() || hasGuessedCorrectly) return;
     socket.emit("submitAnswer", { lobbyName, username, answer });
     setAnswer("");
   };
@@ -119,17 +129,17 @@ function Game() {
       <div className="sidebar-left">
         <h2 className="retro-glitch-text mb-3">Round: {round}</h2>
 
-        <h2 className="retro-glitch-text">Current Users:</h2>
+        <h2 className="retro-glitch-text text-start mt-2">Current Users:</h2>
         <ul className="list-unstyled">
           {users.map((user, idx) => (
-            <li className="retro-glitch-text" key={idx}>
+            <li className="retro-glitch-text text-start" key={idx}>
               {user} — <strong>{scores[user] || 0} pts</strong>
               {guessedUsers.includes(user) && <span> ✅</span>}
             </li>
           ))}
         </ul>
 
-        <button onClick={leaveLobby} className="retro-button mt-3">
+        <button onClick={leaveLobby} className="retro-button mt-3 w-100">
           Leave Lobby
         </button>
       </div>
@@ -138,15 +148,22 @@ function Game() {
       <div className="game-container">
         <h1 className="retro-glitch-title mb-2">Lobby: {lobbyName}</h1>
         <h3 className="retro-glitch-text">Lobby Music</h3>
+
         {currentSong ? (
-          <div>
+          <div className="d-flex flex-column align-items-center">
             <p className="retro-glitch-text">
               Now Playing: {currentSong.title} by ???
             </p>
             <img
               src={currentSong.albumArt}
               alt={currentSong.title}
-              width="150"
+              style={{
+                height: "300px",
+                width: "auto",
+                objectFit: "cover",
+                objectPosition: "center",
+                display: "block",
+              }}
             />
           </div>
         ) : (
@@ -162,24 +179,47 @@ function Game() {
         )}
 
         {gameStarted && (
-          <form onSubmit={submitAnswer} className="mt-3">
-            <label className="retro-glitch-text">Guess the artist</label>
-            <input
-              className="retro-input"
-              type="text"
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-            />
-            <button className="retro-button" type="submit">
-              Submit
-            </button>
+          <form onSubmit={submitAnswer} className="mt-3 w-100">
+            <div className="d-flex flex-wrap gap-2 w-100">
+              <label className="retro-glitch-text align-self-center">
+                Guess the artist
+              </label>
+
+              <input
+                className="retro-input flex-grow-1"
+                type="text"
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                disabled={hasGuessedCorrectly}
+              />
+
+              <button
+                className="retro-button"
+                type="submit"
+                disabled={hasGuessedCorrectly}
+              >
+                Submit
+              </button>
+            </div>
           </form>
         )}
 
         {feedback.length > 0 && (
-          <div className="mt-2">
-            {feedback.map((msg, idx) => (
-              <p className="retro-glitch-text" key={idx}>
+          <div
+            ref={feedbackRef}
+            style={{
+              maxHeight: "3.2em", // ~2 lines
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            {feedback.slice(-5).map((msg, idx) => (
+              <p
+                className="retro-glitch-text"
+                key={idx}
+                style={{ margin: 0, lineHeight: "1.6em" }}
+              >
                 {msg}
               </p>
             ))}
