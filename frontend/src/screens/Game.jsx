@@ -136,6 +136,7 @@ function Game() {
 
       {/* CENTER GAME CONTENT */}
       <div className="game-container">
+        
         <h1 className="retro-glitch-title mb-2">Lobby: {lobbyName}</h1>
         <h3 className="retro-glitch-text">Lobby Music</h3>
         {currentSong ? (

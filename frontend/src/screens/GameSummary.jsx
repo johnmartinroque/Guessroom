@@ -22,10 +22,7 @@ function GameSummary() {
           </li>
         ))}
       </ol>
-      <button
-        className="btn btn-primary mt-3"
-        onClick={() => navigate("/join")}
-      >
+      <button className="btn btn-primary mt-3" onClick={() => navigate("/")}>
         Back to Lobby
       </button>
     </div>
