@@ -194,7 +194,7 @@ function Game() {
               />
 
               <button
-                className="retro-button"
+                className="retro-button-submit"
                 type="submit"
                 disabled={hasGuessedCorrectly}
               >
