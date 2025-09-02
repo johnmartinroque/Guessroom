@@ -20,7 +20,8 @@ function CorrectAnswers({ correctAnswers }) {
               alt={song.title}
               style={{
                 width: "100%",
-                height: "auto",
+                objectFit: "cover",
+                aspectRatio: "1 / 1",
                 borderRadius: "10px",
                 boxShadow: "0px 0px 8px rgba(0,0,0,0.4)",
               }}
