@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import ChatFinished from "../components/ChatFinished";
 import ChatOnGoing from "../components/ChatOnGoing";
+import LobbyUsers from "../components/LobbyUsers";
 
 const socket = io(process.env.REACT_APP_SOCKET_URL);
 
@@ -148,7 +149,7 @@ function Game() {
             </li>
           ))}
         </ul>
-
+        <LobbyUsers lobbyName={lobbyName} />
         <button onClick={leaveLobby} className="retro-button mt-3 w-100">
           Leave Lobby
         </button>
