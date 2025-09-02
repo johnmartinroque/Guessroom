@@ -1,10 +1,14 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import CorrectAnswers from "../components/CorrectAnswers";
 
 function GameSummary() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { topPlayers, lobbyName } = state || { topPlayers: [] };
+  const { topPlayers, correctAnswers, lobbyName } = state || {
+    topPlayers: [],
+    correctAnswers: [],
+  };
 
   if (!state) {
     navigate("/join");
@@ -17,11 +21,12 @@ function GameSummary() {
       <h2 className="retro-glitch-text">Top 3 Players</h2>
       <ol>
         {topPlayers.map((player, idx) => (
-          <li className="retro-glitch-text" key={idx}>  
+          <li className="retro-glitch-text" key={idx}>
             {player.username} — <strong>{player.score} pts</strong>
           </li>
         ))}
       </ol>
+      <CorrectAnswers correctAnswers={correctAnswers} />
       <button className="retro-button mt-3" onClick={() => navigate("/")}>
         Back to Lobby
       </button>

@@ -37,22 +37,25 @@ function Game() {
       setGuessedUsers(guessedUsers || []);
     });
 
-    socket.on("musicUpdate", ({ title, albumArt, filename, action, round }) => {
-      setRound(round || 0);
+    socket.on(
+      "musicUpdate",
+      ({ title, albumArt, filename, action, round, artist }) => {
+        setRound(round || 0);
 
-      if (action === "play") {
-        setCurrentSong({ title, albumArt, filename });
-        setGuessedUsers([]);
-        setFeedback([]);
-        setHasGuessedCorrectly(false); // 🔓 reset for new song
-        audioRef.current.src = `${process.env.REACT_APP_SOCKET_URL}/music/${filename}`;
-        audioRef.current.play().catch((err) => console.log(err));
-      } else if (action === "stop") {
-        setCurrentSong(null);
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
+        if (action === "play") {
+          setCurrentSong({ title, albumArt, filename, artist });
+          setGuessedUsers([]);
+          setFeedback([]);
+          setHasGuessedCorrectly(false); // 🔓 reset for new song
+          audioRef.current.src = `${process.env.REACT_APP_SOCKET_URL}/music/${filename}`;
+          audioRef.current.play().catch((err) => console.log(err));
+        } else if (action === "stop") {
+          setCurrentSong(null);
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }
       }
-    });
+    );
 
     socket.on("skipUpdate", ({ skipVotes, totalUsers }) => {
       setFeedback((prev) => [
@@ -80,8 +83,10 @@ function Game() {
       setGameStarted(true);
     });
 
-    socket.on("gameFinished", ({ topPlayers }) => {
-      navigate("/gamesummary", { state: { topPlayers, lobbyName } });
+    socket.on("gameFinished", ({ topPlayers, correctAnswers }) => {
+      navigate("/gamesummary", {
+        state: { topPlayers, lobbyName, correctAnswers },
+      });
     });
 
     return () => {
@@ -206,24 +211,24 @@ function Game() {
 
         {feedback.length > 0 && (
           <div
-  ref={feedbackRef}
-  style={{
-    maxHeight: "3.2em",
-    overflow: "hidden",
-    display: "block",
-    marginTop: "0.5rem", // add some spacing if needed
-  }}
->
-  {feedback.slice(-5).map((msg, idx) => (
-    <p
-      className="retro-glitch-text"
-      key={idx}
-      style={{ margin: 0, lineHeight: "1.6em" }}
-    >
-      {msg}
-    </p>
-  ))}
-</div>
+            ref={feedbackRef}
+            style={{
+              maxHeight: "3.2em",
+              overflow: "hidden",
+              display: "block",
+              marginTop: "0.5rem", // add some spacing if needed
+            }}
+          >
+            {feedback.slice(-5).map((msg, idx) => (
+              <p
+                className="retro-glitch-text"
+                key={idx}
+                style={{ margin: 0, lineHeight: "1.6em" }}
+              >
+                {msg}
+              </p>
+            ))}
+          </div>
         )}
 
         {currentSong && (

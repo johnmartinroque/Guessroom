@@ -14,6 +14,7 @@ function CorrectAnswerModal({ show, onClose, song }) {
           src={song.albumArt}
           alt={song.title}
           style={{ width: "150px", marginBottom: "10px" }}
+          rrf
         />
         <h5>{song.title}</h5>
         <p>{song.artist}</p>

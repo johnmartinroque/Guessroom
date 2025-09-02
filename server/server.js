@@ -223,7 +223,16 @@ io.on("connection", (socket) => {
         .slice(0, 3)
         .map(([username, score]) => ({ username, score }));
 
-      io.to(lobbyName).emit("gameFinished", { topPlayers });
+      const correctAnswers = lobbies[lobbyName].playedSongs.map((filename) => {
+        const song = songs.find((s) => s.filename === filename);
+        return {
+          title: song.title,
+          artist: song.artist,
+          albumArt: song.albumArt,
+        };
+      });
+
+      io.to(lobbyName).emit("gameFinished", { topPlayers, correctAnswers });
       return;
     }
 
