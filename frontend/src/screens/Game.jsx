@@ -19,9 +19,25 @@ function Game() {
   const [round, setRound] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
   const [guessedUsers, setGuessedUsers] = useState([]);
-  const [hasGuessedCorrectly, setHasGuessedCorrectly] = useState(false); // ✅ new state
+  const [hasGuessedCorrectly, setHasGuessedCorrectly] = useState(false);
   const audioRef = useRef(null);
   const feedbackRef = useRef(null);
+  const [volume, setVolume] = useState(100); // volume as 0-100 for slider
+
+  // Update audio volume whenever `volume` state changes
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume / 100; // convert 0-100 to 0.0-1.0
+    }
+  }, [volume]);
+
+  // Set CSS variable for slider fill on volume change
+  useEffect(() => {
+    const slider = document.getElementById("volume-slider");
+    if (slider) {
+      slider.style.setProperty("--volume-percent", `${volume}%`);
+    }
+  }, [volume]);
 
   useEffect(() => {
     if (!lobbyName || !username) {
@@ -47,17 +63,25 @@ function Game() {
             title,
             albumArt,
             filename,
-            artist: Array.isArray(artist) ? artist : [artist], // Always an array
+            artist: Array.isArray(artist) ? artist : [artist],
           });
           setGuessedUsers([]);
           setFeedback([]);
           setHasGuessedCorrectly(false);
-          audioRef.current.src = `${process.env.REACT_APP_SOCKET_URL}/music/${filename}`;
-          audioRef.current.play().catch((err) => console.log(err));
+
+          if (audioRef.current) {
+            audioRef.current.src = `${process.env.REACT_APP_SOCKET_URL}/music/${filename}`;
+            audioRef.current.volume = volume / 100;
+            audioRef.current
+              .play()
+              .catch((err) => console.log("Audio play error:", err));
+          }
         } else if (action === "stop") {
           setCurrentSong(null);
-          audioRef.current.pause();
-          audioRef.current.currentTime = 0;
+          if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+          }
         }
       }
     );
@@ -70,10 +94,11 @@ function Game() {
     });
 
     socket.on("correctAnswer", ({ username: user, scores }) => {
+      console.log("Correct answer event received:", user);
       setScores(scores);
       setGuessedUsers((prev) => [...prev, user]);
       if (user === username) {
-        setHasGuessedCorrectly(true); // 🔒 disable input for this round
+        setHasGuessedCorrectly(true);
         setFeedback((prev) => [...prev, "✅ You guessed correctly!"]);
       } else {
         setFeedback((prev) => [...prev, `✅ ${user} has guessed correctly`]);
@@ -81,6 +106,7 @@ function Game() {
     });
 
     socket.on("wrongAnswer", ({ answer }) => {
+      console.log("Wrong answer event received:", answer);
       setFeedback((prev) => [...prev, `❌ Wrong guess: ${answer}`]);
     });
 
@@ -104,7 +130,7 @@ function Game() {
       socket.off("skipUpdate");
       socket.off("gameFinished");
     };
-  }, [lobbyName, username, navigate]);
+  }, [lobbyName, username, navigate]); // <--- no volume here!
 
   useEffect(() => {
     if (feedbackRef.current) {
@@ -114,6 +140,7 @@ function Game() {
 
   const submitAnswer = (e) => {
     e.preventDefault();
+    console.log("Submitting answer:", answer, "hasGuessedCorrectly:", hasGuessedCorrectly);
     if (!answer.trim() || hasGuessedCorrectly) return;
     socket.emit("submitAnswer", { lobbyName, username, answer });
     setAnswer("");
@@ -148,7 +175,24 @@ function Game() {
             </li>
           ))}
         </ul>
-
+        {/* 🔊 Volume Rocker */}
+        <div className="mt-4 w-100">
+          <label
+            className="retro-glitch-text d-block mb-1 text-start"
+            htmlFor="volume-slider"
+          >
+            Volume
+          </label>
+          <input
+            id="volume-slider"
+            type="range"
+            min="0"
+            max="100"
+            value={volume}
+            onChange={(e) => setVolume(Number(e.target.value))}
+            style={{ "--volume-percent": `${volume}%` }}
+          />
+        </div>
         <button onClick={leaveLobby} className="retro-button mt-3 w-100">
           Leave Lobby
         </button>
@@ -162,7 +206,8 @@ function Game() {
         {currentSong ? (
           <div className="d-flex flex-column align-items-center">
             <p className="retro-glitch-text">
-              Now Playing: {currentSong.title} by ???
+              Now Playing: {currentSong.title} by ???{" "}
+              {/* You can reveal artist name if needed */}
             </p>
             <img
               src={currentSong.albumArt}
@@ -201,6 +246,8 @@ function Game() {
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
                 disabled={hasGuessedCorrectly}
+                autoComplete="off"
+                autoFocus
               />
 
               <button
@@ -221,7 +268,7 @@ function Game() {
               maxHeight: "3.2em",
               overflow: "hidden",
               display: "block",
-              marginTop: "0.5rem", // add some spacing if needed
+              marginTop: "0.5rem",
             }}
           >
             {feedback.slice(-5).map((msg, idx) => (
