@@ -18,6 +18,7 @@ function JoinLobby() {
 
     return () => {
       socket.off("joinError");
+      socket.off("lobbyUpdate");
     };
   }, []);
 
@@ -33,7 +34,7 @@ function JoinLobby() {
       username: normalizedUsername,
     });
 
-    socket.once("lobbyUpdate", () => {
+    socket.on("lobbyUpdate", () => {
       navigate("/game", {
         state: { lobbyName: normalizedLobbyName, username: normalizedUsername },
       });
