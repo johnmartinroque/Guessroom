@@ -5,7 +5,7 @@ import CorrectAnswers from "../components/CorrectAnswers";
 function GameSummary() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { topPlayers, correctAnswers, lobbyName } = state || {
+  const { topPlayers, correctAnswers, lobbyName, username } = state || {
     topPlayers: [],
     correctAnswers: [],
   };
@@ -27,7 +27,10 @@ function GameSummary() {
         ))}
       </ol>
       <CorrectAnswers correctAnswers={correctAnswers} />
-      <button className="retro-button mt-3" onClick={() => navigate("/")}>
+      <button
+        className="retro-button mt-3"
+        onClick={() => navigate("/game", { state: { lobbyName, username } })}
+      >
         Back to Lobby
       </button>
     </div>

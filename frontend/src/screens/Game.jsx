@@ -85,7 +85,7 @@ function Game() {
 
     socket.on("gameFinished", ({ topPlayers, correctAnswers }) => {
       navigate("/gamesummary", {
-        state: { topPlayers, lobbyName, correctAnswers },
+        state: { topPlayers, lobbyName, correctAnswers, username },
       });
     });
 
