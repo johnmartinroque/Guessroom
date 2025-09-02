@@ -38,7 +38,7 @@
   {
     "filename": "song7.mp3",
     "title": "Not Like Us",
-    "artist": [ "Kendrick Lamar", "Kendrick", "kdot"],
+    "artist": ["Kendrick Lamar", "Kendrick", "kdot"],
     "albumArt": "https://hiphophero.com/static/uploads/5/2024/07/Kendrick-Lamar-2024-Not-Like-Us-Hip-Hop-Hero-1140x855.jpg"
   },
   {
@@ -110,7 +110,12 @@
   {
     "filename": "song19.mp3",
     "title": "See You Again",
-    "artist": ["Tyler, the Creator", "Tyler", "Tyler the creator", "Kali Uchis"],
+    "artist": [
+      "Tyler, the Creator",
+      "Tyler",
+      "Tyler the creator",
+      "Kali Uchis"
+    ],
     "albumArt": "https://cdn-images.dzcdn.net/images/cover/a7a16b8f63b1ec0e9fbd327619966737/1900x1900-000000-80-0-0.jpg"
   },
   {
@@ -164,7 +169,7 @@
   {
     "filename": "song28.mp3",
     "title": "Redbone",
-    "artist": ["Childish Gambino","Donald Glover", "Gambino"],
+    "artist": ["Childish Gambino", "Donald Glover", "Gambino"],
     "albumArt": "https://i1.sndcdn.com/avatars-EJ9GGrkQ9typ3a0d-v74n4Q-t1080x1080.jpg"
   },
   {
@@ -178,5 +183,41 @@
     "title": "My Way",
     "artist": "Frank Sinatra",
     "albumArt": "https://d3i6fh83elv35t.cloudfront.net/newshour/app/uploads/2015/12/GettyImages-85339538-1024x889.jpg"
+  },
+  {
+    "filename": "song31.mp3",
+    "title": "Paranoid",
+    "artist": "Black Sabbath",
+    "albumArt": "https://upload.wikimedia.org/wikipedia/commons/4/42/Sabs.jpg"
+  },
+  {
+    "filename": "song32.mp3",
+    "title": "Never Gonna Give You Up",
+    "artist": "Rick Astley",
+    "albumArt": "https://variety.com/wp-content/uploads/2021/07/Rick-Astley-Never-Gonna-Give-You-Up.png?w=1000&h=667&crop=1"
+  },
+  {
+    "filename": "song33.mp3",
+    "title": "Immigrant Song ",
+    "artist": "Led Zeppelin",
+    "albumArt": "https://www.rollingstone.com/wp-content/uploads/2019/01/led-zeppelin-1969.jpg?w=1581&h=1054&crop=1"
+  },
+  {
+    "filename": "song34.mp3",
+    "title": "Here, There and Everywhere",
+    "artist": "The Beatles",
+    "albumArt": "https://i.guim.co.uk/img/media/6290093cbc26fc827f4d944ff9eccdd6d52f63c2/29_30_3694_2479/master/3694.jpg?width=700&quality=85&auto=format&fit=max&s=5e12a97bdf0d52e06b9eded0074d5921"
+  },
+  {
+    "filename": "song35.mp3",
+    "title": "Highway To Hell",
+    "artist": "AC/DC",
+    "albumArt": "https://www.rollingstone.com/wp-content/uploads/2020/10/10025-01E-JC-white_group_4559_sRGB.jpg"
+  },
+  {
+    "filename": "song36.mp3",
+    "title": "Thick Of It",
+    "artist": "KSI",
+    "albumArt": "https://i2-prod.birminghammail.co.uk/article26074895.ece/ALTERNATES/s1200b/0_KSI-v-FaZe-Temperrr-Press-Conference-BOXPARK-Wembley.jpg"
   }
 ]
