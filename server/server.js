@@ -153,35 +153,42 @@ io.on("connection", (socket) => {
     }
   });
 
-  // Handle guesses
-  socket.on("submitAnswer", ({ lobbyName, username, answer }) => {
-    if (lobbies[lobbyName] && lobbies[lobbyName].currentSong) {
-      const correctArtist = lobbies[lobbyName].currentSong.artist.toLowerCase();
-      const guess = answer.trim().toLowerCase();
+socket.on("submitAnswer", ({ lobbyName, username, answer }) => {
+  if (lobbies[lobbyName] && lobbies[lobbyName].currentSong) {
+    const { artist } = lobbies[lobbyName].currentSong;
+    const guess = answer.trim().toLowerCase();
 
-      if (guess === correctArtist) {
-        if (!lobbies[lobbyName].guessed.includes(username)) {
-          lobbies[lobbyName].guessed.push(username);
-          lobbies[lobbyName].scores[username] += 1;
-        }
+    const acceptableAnswers = Array.isArray(artist)
+      ? artist.map((a) => a.trim().toLowerCase())
+      : [artist.trim().toLowerCase()];
 
-        io.to(lobbyName).emit("correctAnswer", {
-          username,
-          answer,
-          scores: lobbies[lobbyName].scores,
-        });
+    const isCorrect = acceptableAnswers.includes(guess);
 
-        // If all users guessed correctly → next round
-        if (
-          lobbies[lobbyName].guessed.length === lobbies[lobbyName].users.length
-        ) {
-          nextRound(lobbyName);
-        }
-      } else {
-        socket.emit("wrongAnswer", { answer });
+    if (isCorrect) {
+      if (!lobbies[lobbyName].guessed.includes(username)) {
+        lobbies[lobbyName].guessed.push(username);
+        lobbies[lobbyName].scores[username] += 1;
       }
+
+      io.to(lobbyName).emit("correctAnswer", {
+        username,
+        answer,
+        scores: lobbies[lobbyName].scores,
+      });
+
+      // All users guessed? Next round.
+      if (
+        lobbies[lobbyName].guessed.length ===
+        lobbies[lobbyName].users.length
+      ) {
+        nextRound(lobbyName);
+      }
+    } else {
+      socket.emit("wrongAnswer", { answer });
     }
-  });
+  }
+});
+
 
   function playRandomSong(lobbyName) {
     const lobby = lobbies[lobbyName];
