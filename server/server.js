@@ -21,14 +21,12 @@ app.use(cors());
 app.use("/music", express.static(path.join(__dirname, "music")));
 
 const server = http.createServer(app);
-
 const io = new Server(server, {
   cors: {
-    origin: ["https://guessroom.vercel.app"],
+    origin: ["https://guessroom.vercel.app", "http://localhost:3000"],
     methods: ["GET", "POST"],
   },
 });
-
 // In-memory state per lobby
 // { lobbyName: { users: [], currentSong: null } }
 let lobbies = {};
