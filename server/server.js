@@ -153,39 +153,38 @@ io.on("connection", (socket) => {
   });
 
   // Handle guesses
-socket.on("submitAnswer", ({ lobbyName, username, answer }) => {
-  if (lobbies[lobbyName] && lobbies[lobbyName].currentSong) {
-    const artistField = lobbies[lobbyName].currentSong.artist;
+  socket.on("submitAnswer", ({ lobbyName, username, answer }) => {
+    if (lobbies[lobbyName] && lobbies[lobbyName].currentSong) {
+      const artistField = lobbies[lobbyName].currentSong.artist;
 
-    const guess = answer.trim().toLowerCase();
+      const guess = answer.trim().toLowerCase();
 
-    const isCorrect =
-      Array.isArray(artistField)
+      const isCorrect = Array.isArray(artistField)
         ? artistField.some((artist) => artist.toLowerCase() === guess)
         : artistField.toLowerCase() === guess;
 
-    if (isCorrect) {
-      if (!lobbies[lobbyName].guessed.includes(username)) {
-        lobbies[lobbyName].guessed.push(username);
-        lobbies[lobbyName].scores[username] += 1;
-      }
+      if (isCorrect) {
+        if (!lobbies[lobbyName].guessed.includes(username)) {
+          lobbies[lobbyName].guessed.push(username);
+          lobbies[lobbyName].scores[username] += 1;
+        }
 
-      io.to(lobbyName).emit("correctAnswer", {
-        username,
-        answer,
-        scores: lobbies[lobbyName].scores,
-      });
+        io.to(lobbyName).emit("correctAnswer", {
+          username,
+          answer,
+          scores: lobbies[lobbyName].scores,
+        });
 
-      if (
-        lobbies[lobbyName].guessed.length === lobbies[lobbyName].users.length
-      ) {
-        nextRound(lobbyName);
+        if (
+          lobbies[lobbyName].guessed.length === lobbies[lobbyName].users.length
+        ) {
+          nextRound(lobbyName);
+        }
+      } else {
+        socket.emit("wrongAnswer", { answer });
       }
-    } else {
-      socket.emit("wrongAnswer", { answer });
     }
-  }
-});
+  });
 
   function playRandomSong(lobbyName) {
     const lobby = lobbies[lobbyName];
@@ -216,7 +215,7 @@ socket.on("submitAnswer", ({ lobbyName, username, answer }) => {
     });
   }
 
-  const MAX_ROUNDS = 9;
+  const MAX_ROUNDS = 10;
 
   function nextRound(lobbyName) {
     if (!lobbies[lobbyName]) return;

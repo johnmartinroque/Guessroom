@@ -44,6 +44,18 @@ function Game() {
     }
   }, [volume]);
 
+  const playCorrectSound = () => {
+    const audio = new Audio("/effects/correct.mp3");
+    audio.volume = volume / 100;
+    audio.play().catch((err) => console.error(err));
+  };
+
+  const playWrongSound = () => {
+    const audio = new Audio("/effects/error.mp3");
+    audio.volume = volume / 100;
+    audio.play().catch((err) => console.error(err));
+  };
+
   useEffect(() => {
     if (!lobbyName || !username) {
       navigate("/join");
@@ -113,10 +125,12 @@ function Game() {
       } else {
         setFeedback((prev) => [...prev, `✅ ${user} has guessed correctly`]);
       }
+      playCorrectSound();
     });
 
     socket.on("wrongAnswer", ({ answer }) => {
       setFeedback((prev) => [...prev, `❌ Wrong guess: ${answer}`]);
+      playWrongSound();
     });
 
     socket.on("gameStarted", () => {
