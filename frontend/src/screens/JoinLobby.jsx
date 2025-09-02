@@ -22,6 +22,10 @@ function JoinLobby() {
     };
   }, []);
 
+  const refresh = () => {
+    window.location.reload();
+  };
+
   const joinLobby = () => {
     if (!username || !lobbyName) return;
 
@@ -38,6 +42,7 @@ function JoinLobby() {
       navigate("/game", {
         state: { lobbyName: normalizedLobbyName, username: normalizedUsername },
       });
+      refresh();
     });
   };
 
@@ -64,7 +69,7 @@ function JoinLobby() {
         className="retro-input mt-3"
       />
       <button onClick={joinLobby} className="retro-button mt-5">
-        Join Lobby
+        Create or Join Lobby
       </button>
 
       {error && <p className="text-danger mt-2">{error}</p>}

@@ -20,6 +20,10 @@ function LobbyList({ username, navigate }) {
     };
   }, []);
 
+  const refresh = () => {
+    window.location.reload();
+  };
+
   const joinLobby = (lobbyName) => {
     if (!username) {
       alert("Please enter a username first!");
@@ -30,6 +34,7 @@ function LobbyList({ username, navigate }) {
 
     socket.once("lobbyUpdate", () => {
       navigate("/game", { state: { lobbyName, username } });
+      refresh();
     });
   };
 
@@ -44,7 +49,8 @@ function LobbyList({ username, navigate }) {
             <li key={index} className="retro-glitch-text mb-3">
               <div className="d-flex justify-content-between align-items-center lobby-info-container">
                 <span className="lobby-info-text">
-                  {lobby.lobbyName} ({lobby.users.length} {lobby.users.length === 1 ? "player" : "players"})
+                  {lobby.lobbyName} ({lobby.users.length}{" "}
+                  {lobby.users.length === 1 ? "player" : "players"})
                 </span>
                 <button
                   className="retro-button"
