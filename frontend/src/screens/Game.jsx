@@ -4,7 +4,10 @@ import { io } from "socket.io-client";
 import ChatFinished from "../components/ChatFinished";
 import ChatOnGoing from "../components/ChatOnGoing";
 
-const socket = io(process.env.REACT_APP_SOCKET_URL);
+const socket = io(process.env.REACT_APP_SOCKET_URL, {
+  transports: ["websocket"], // force websocket instead of polling
+  withCredentials: true,
+});
 
 function Game() {
   const { state } = useLocation();

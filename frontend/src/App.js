@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import JoinLobby from "./screens/JoinLobby";
 import Game from "./screens/Game";
 import GameSummary from "./screens/GameSummary";
-import "./App.css"
-import LoadingScreen from './components/LoadingScreen';
+import "./App.css";
+import LoadingScreen from "./components/LoadingScreen";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,17 +14,17 @@ function App() {
       {isLoading ? (
         <LoadingScreen onLoaded={() => setIsLoading(false)} />
       ) : (
-      <div>
-      <Router>
-        {/* <Header /> */}
-        <Routes>
-          {/* <Route path="/" element={<Home />} /> */}
-          <Route path="/" element={<JoinLobby />} />
-          <Route path="/game" element={<Game />} />
-          <Route path="/gamesummary" element={<GameSummary />} />
-        </Routes>
-      </Router>
-    </div>
+        <div>
+          <Router>
+            {/* <Header /> */}
+            <Routes>
+              {/* <Route path="/" element={<Home />} /> */}
+              <Route path="/" element={<JoinLobby />} />
+              <Route path="/game" element={<Game />} />
+              <Route path="/gamesummary" element={<GameSummary />} />
+            </Routes>
+          </Router>
+        </div>
       )}
     </>
   );

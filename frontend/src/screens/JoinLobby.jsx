@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import LobbyList from "../components/LobbyList";
 
-
 const socket = io(process.env.REACT_APP_SOCKET_URL);
 
 function JoinLobby() {
@@ -29,10 +28,15 @@ function JoinLobby() {
     const normalizedLobbyName = lobbyName.toLowerCase();
     const normalizedUsername = username.toLowerCase();
 
-    socket.emit("joinLobby", { lobbyName: normalizedLobbyName, username: normalizedUsername });
+    socket.emit("joinLobby", {
+      lobbyName: normalizedLobbyName,
+      username: normalizedUsername,
+    });
 
     socket.once("lobbyUpdate", () => {
-      navigate("/game", { state: { lobbyName: normalizedLobbyName, username: normalizedUsername } });
+      navigate("/game", {
+        state: { lobbyName: normalizedLobbyName, username: normalizedUsername },
+      });
     });
   };
 
@@ -45,7 +49,9 @@ function JoinLobby() {
         placeholder="Enter Lobby Name"
         value={lobbyName}
         maxLength={15} // limit input to 15 chars
-        onChange={(e) => setLobbyName(e.target.value.toLowerCase().slice(0, 15))}
+        onChange={(e) =>
+          setLobbyName(e.target.value.toLowerCase().slice(0, 15))
+        }
         className="retro-input mt-5"
       />
       <input
@@ -62,7 +68,6 @@ function JoinLobby() {
 
       {error && <p className="text-danger mt-2">{error}</p>}
       <LobbyList username={username} navigate={navigate} />
-
     </div>
   );
 }
