@@ -3,31 +3,31 @@
     "filename": "song1.mp3",
     "title": "Espresso",
     "artist": "Sabrina Carpenter",
-    "albumArt": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da841f54312d0c9f27ecd5b7cd94"
+    "albumArt": "https://nique.net/wp-content/uploads/2024/08/Sabrina-Carpenter-Short-n-Sweet-982x982.jpg"
   },
   {
     "filename": "song2.mp3",
     "title": "APT",
     "artist": ["Rose", "Bruno Mars"],
-    "albumArt": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/2018-05-12-_Cannes-L%27acteur_Michael_B._Jordan-2721_%2842075892224%29.jpg/250px-2018-05-12-_Cannes-L%27acteur_Michael_B._Jordan-2721_%2842075892224%29.jpg"
+    "albumArt": "https://preview.redd.it/250126-apt-by-ros%C3%A9-bruno-mars-has-surpassed-1-billion-v0-aolxpwh49efe1.jpeg?width=640&crop=smart&auto=webp&s=c14b08417cad52bcc2013d30be8d19498fad5955"
   },
   {
     "filename": "song3.mp3",
-    "title": "30 for 30",
+    "title": "Snooze",
     "artist": "SZA",
-    "albumArt": "https://hips.hearstapps.com/hmg-prod/images/gettyimages-490703338.jpg?crop=1xw:1.0xh;center,top&resize=640:*"
+    "albumArt": "https://www.billboard.com/wp-content/uploads/2023/04/sza-bb5-2023-market-boxscore-billboard-1548.jpg"
   },
   {
     "filename": "song4.mp3",
     "title": "Die With A Smile",
     "artist": ["Lady Gaga", "Bruno Mars"],
-    "albumArt": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvhcYskQHOxAqogCcgaOSczW9D3l6Nd4riLQ&s"
+    "albumArt": "https://scontent.fcrk1-3.fna.fbcdn.net/v/t51.75761-15/491443871_18506479840004009_1171534005785620212_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=pon80yhdMC8Q7kNvwEWUGfU&_nc_oc=AdkrzecT8KgDY0d3lT0ZD5sJF3X2xr4XQrPK7sihac0bk8UuaKB0mSajDq17Jl5pQB4&_nc_zt=23&_nc_ht=scontent.fcrk1-3.fna&_nc_gid=r6HtLu6H70npKCoy2exEdQ&oh=00_AfVJoCrCMFD5WxN49i1FCdrO_HDj1XNHC7GOSd2OiRvRZQ&oe=68BC32DA"
   },
   {
     "filename": "song5.mp3",
     "title": "Birds Of A Feather",
     "artist": "Billie Eilish",
-    "albumArt": "https://i.scdn.co/image/ab67616d00001e0271d62ea7ea8a5be92d3c1f62"
+    "albumArt": "https://i.guim.co.uk/img/media/67944850a1b5ebd6a0fba9e3528d448ebe360c60/359_0_2469_1482/master/2469.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=03f3e07a7f367f36a738f1ad8132b3bb"
   },
   {
     "filename": "song6.mp3",
@@ -39,24 +39,49 @@
     "filename": "song7.mp3",
     "title": "Not Like Us",
     "artist": ["Kendrick", "kdot", "Kendrick Lamar"],
-    "albumArt": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQftzsgWAQcDjAWY7GSVJgyjttELdiR6NLQ9A&s"
+    "albumArt": "https://hiphophero.com/static/uploads/5/2024/07/Kendrick-Lamar-2024-Not-Like-Us-Hip-Hop-Hero-1140x855.jpg"
   },
   {
     "filename": "song8.mp3",
     "title": "Tough Luck",
     "artist": "Laufey",
-    "albumArt": "https://c.ndtvimg.com/2025-06/7s4rp8ak_jd-vance-meme_625x300_28_June_25.jpg?im=FitAndFill,algorithm=dnn,width=1200,height=738"
+    "albumArt": "https://variety.com/wp-content/uploads/2024/12/Laufey-Variety-Hitmakres.jpg?w=1000&h=667&crop=1"
   },
   {
     "filename": "song9.mp3",
     "title": "Real Man",
     "artist": "Beabadoobee",
-    "albumArt": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVc4QVWTomLRQV1_Ght5mpRNTiTu_ZNaMxmg&s"
+    "albumArt": "https://f4.bcbits.com/img/a1734164975_10.jpg"
   },
   {
     "filename": "song10.mp3",
     "title": "Pueblo",
     "artist": ["wave to earth", "wte"],
-    "albumArt": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVc4QVWTomLRQV1_Ght5mpRNTiTu_ZNaMxmg&s"
+    "albumArt": "https://i.scdn.co/image/ab6761610000e5eb49799010fa77f1f862ab207e"
+  },
+  {
+    "filename": "song11.mp3",
+    "title": "Smells Like Teen Spirit",
+    "artist": "Nirvana",
+    "albumArt": "https://i.scdn.co/image/ab6761610000e5eb49799010fa77f1f862ab207e"
+  },
+  {
+    "filename": "song12.mp3",
+    "title": "The Real Slim Shady",
+    "artist": "Eminem",
+    "albumArt": "https://www.chipublib.org/wp-content/uploads/sites/3/2022/09/36079964425_7b3042d5e1_k.jpg"
+  },
+  {
+    "filename": "song13.mp3",
+    "title": "Smells Like Teen Spirit",
+    "artist": "Nirvana",
+    "albumArt": "https://i.scdn.co/image/ab6761610000e5eb49799010fa77f1f862ab207e"
+  },
+
+  {
+    "filename": "song25.mp3",
+    "title": "Creep",
+    "artist": "Radiohead",
+    "albumArt": "https://images.genius.com/486b67f44fbb8bf0c4ce4e7d502a466d.829x793x1.png"
   }
 ]
