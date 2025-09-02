@@ -38,7 +38,7 @@
   {
     "filename": "song7.mp3",
     "title": "Not Like Us",
-    "artist": ["Kendrick", "kdot", "Kendrick Lamar"],
+    "artist": [ "Kendrick Lamar", "Kendrick", "kdot"],
     "albumArt": "https://hiphophero.com/static/uploads/5/2024/07/Kendrick-Lamar-2024-Not-Like-Us-Hip-Hop-Hero-1140x855.jpg"
   },
   {
@@ -63,7 +63,7 @@
     "filename": "song11.mp3",
     "title": "Smells Like Teen Spirit",
     "artist": "Nirvana",
-    "albumArt": "https://static.wikia.nocookie.net/the-offspring/images/6/6e/Nirvana.jpg/revision/latest?cb=20140912201538"
+    "albumArt": "https://www.impericon.com/cdn/shop/articles/20230912_nirvanajubilaeum_2_52c5ec1e-4a78-4f5a-b5f3-3b054e9cc10c.jpg?v=1740047327"
   },
   {
     "filename": "song12.mp3",
@@ -110,7 +110,7 @@
   {
     "filename": "song19.mp3",
     "title": "See You Again",
-    "artist": ["Tyler", "Tyler, the Creator", "Tyler the creator", "Kali Uchis"],
+    "artist": ["Tyler, the Creator", "Tyler", "Tyler the creator", "Kali Uchis"],
     "albumArt": "https://cdn-images.dzcdn.net/images/cover/a7a16b8f63b1ec0e9fbd327619966737/1900x1900-000000-80-0-0.jpg"
   },
   {
@@ -158,19 +158,19 @@
   {
     "filename": "song27.mp3",
     "title": "Violent Crimes",
-    "artist": ["Kanye", "Kanye West", "Ye"],
+    "artist": ["Kanye West", "Kanye", "Ye"],
     "albumArt": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Kanye_West_at_the_2009_Tribeca_Film_Festival_%28crop_2%29.jpg"
   },
   {
     "filename": "song28.mp3",
     "title": "Redbone",
-    "artist": ["Donald Glover", "Gambino", "Childish Gambino"],
+    "artist": ["Childish Gambino","Donald Glover", "Gambino"],
     "albumArt": "https://i1.sndcdn.com/avatars-EJ9GGrkQ9typ3a0d-v74n4Q-t1080x1080.jpg"
   },
   {
     "filename": "song29.mp3",
     "title": "No Role Modelz",
-    "artist": ["Cole", "J.Cole", "J. Cole", "J Cole", "Jcole"],
+    "artist": ["J.Cole", "Cole", "J. Cole", "J Cole", "Jcole"],
     "albumArt": "https://magazine.weverse.io/upload/img/202304/20230405DF9cc46.png"
   },
   {

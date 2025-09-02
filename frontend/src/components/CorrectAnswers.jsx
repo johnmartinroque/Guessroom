@@ -26,9 +26,11 @@ function CorrectAnswers({ correctAnswers }) {
                 boxShadow: "0px 0px 8px rgba(0,0,0,0.4)",
               }}
             />
-            <p className="retro-glitch-text mt-2 mb-0">{song.title}</p>
+            <p className="retro-glitch-text mt-2 mb-0">{song.title} - </p>
             <p className="retro-glitch-text">
-              <strong>{song.artist}</strong>
+              <strong>
+                {Array.isArray(song.artist) ? song.artist[0] : song.artist}
+              </strong>
             </p>
           </div>
         ))}
