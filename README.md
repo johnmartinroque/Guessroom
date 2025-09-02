@@ -2,6 +2,10 @@
 
 A real-time multiplayer music guessing game built with **Node.js**, **Express**, **Socket.IO**, and **React**. Players can join lobbies with friends, listen to songs, and compete to guess the artist correctly.
 
+## Screenshots
+![Image](https://github.com/user-attachments/assets/ebe3b21d-6b60-4d28-99e5-6f45a02e3fd9)
+![Image](https://github.com/user-attachments/assets/eb08e30d-233d-4c36-a8ce-db3e1ea141b1)
+
 ---
 
 ## 🚀 Features
@@ -34,4 +38,5 @@ A real-time multiplayer music guessing game built with **Node.js**, **Express**,
 - **Realtime Communication:** Socket.IO
 - **Music Hosting:** Static files served via Express
 - **State Management:** In-memory per lobby
+
 
