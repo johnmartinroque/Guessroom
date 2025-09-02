@@ -8,7 +8,7 @@
   {
     "filename": "song2.mp3",
     "title": "APT",
-    "artist": "Rose",
+    "artist": ["Rose", "Bruno Mars"],
     "albumArt": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/2018-05-12-_Cannes-L%27acteur_Michael_B._Jordan-2721_%2842075892224%29.jpg/250px-2018-05-12-_Cannes-L%27acteur_Michael_B._Jordan-2721_%2842075892224%29.jpg"
   },
   {
@@ -20,7 +20,7 @@
   {
     "filename": "song4.mp3",
     "title": "Die With A Smile",
-    "artist": "Lady Gaga",
+    "artist": ["Lady Gaga", "Bruno Mars"],
     "albumArt": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvhcYskQHOxAqogCcgaOSczW9D3l6Nd4riLQ&s"
   },
   {
@@ -38,7 +38,7 @@
   {
     "filename": "song7.mp3",
     "title": "Not Like Us",
-    "artist": "Kendrick Lamar",
+    "artist": ["Kendrick", "kdot", "Kendrick Lamar"],
     "albumArt": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQftzsgWAQcDjAWY7GSVJgyjttELdiR6NLQ9A&s"
   },
   {
@@ -51,6 +51,12 @@
     "filename": "song9.mp3",
     "title": "Real Man",
     "artist": "Beabadoobee",
+    "albumArt": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVc4QVWTomLRQV1_Ght5mpRNTiTu_ZNaMxmg&s"
+  },
+  {
+    "filename": "song10.mp3",
+    "title": "Pueblo",
+    "artist": ["wave to earth", "wte"],
     "albumArt": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVc4QVWTomLRQV1_Ght5mpRNTiTu_ZNaMxmg&s"
   }
 ]
