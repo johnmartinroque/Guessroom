@@ -33,6 +33,15 @@ function JoinLobby() {
       lobbyName: normalizedLobbyName,
       username: normalizedUsername,
     });
+
+    socket.on("lobbyUpdate", ({ users }) => {
+      if (users.includes(normalizedUsername)) {
+        navigate("/game", {
+          state: { lobbyName: normalizedLobbyName, username },
+        });
+        socket.off("lobbyUpdate"); // cleanup so it only triggers once
+      }
+    });
   };
 
   return (
