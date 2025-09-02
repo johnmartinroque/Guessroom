@@ -16,6 +16,22 @@ function JoinLobby() {
       setError(message);
     });
 
+    socket.on("lobbyUpdate", ({ users }) => {
+      // Navigate only if this client is part of the lobby
+      if (users.includes(username)) {
+        navigate("/game", {
+          state: {
+            lobbyName: lobbyName.toLowerCase(),
+            username: username.toLowerCase(),
+          },
+        });
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
+      }
+    });
+
     return () => {
       socket.off("joinError");
       socket.off("lobbyUpdate");
@@ -32,16 +48,6 @@ function JoinLobby() {
     socket.emit("joinLobby", {
       lobbyName: normalizedLobbyName,
       username: normalizedUsername,
-    });
-
-    socket.on("lobbyUpdate", () => {
-      navigate("/game", {
-        state: { lobbyName: normalizedLobbyName, username: normalizedUsername },
-      });
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 100);
     });
   };
 
