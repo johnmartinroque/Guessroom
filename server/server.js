@@ -155,7 +155,13 @@ io.on("connection", (socket) => {
   // Handle guesses
   socket.on("submitAnswer", ({ lobbyName, username, answer }) => {
     if (lobbies[lobbyName] && lobbies[lobbyName].currentSong) {
-      const correctArtist = lobbies[lobbyName].currentSong.artist.toLowerCase();
+      const artistField = lobbies[lobbyName].currentSong.artist;
+
+      // Convert to string if array
+      const correctArtist = Array.isArray(artistField)
+        ? artistField.join(", ").toLowerCase()
+        : artistField.toLowerCase();
+
       const guess = answer.trim().toLowerCase();
 
       if (guess === correctArtist) {
@@ -170,7 +176,6 @@ io.on("connection", (socket) => {
           scores: lobbies[lobbyName].scores,
         });
 
-        // If all users guessed correctly → next round
         if (
           lobbies[lobbyName].guessed.length === lobbies[lobbyName].users.length
         ) {
