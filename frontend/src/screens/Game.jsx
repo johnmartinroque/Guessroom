@@ -3,8 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import ChatFinished from "../components/ChatFinished";
 import ChatOnGoing from "../components/ChatOnGoing";
-
-const socket = io(process.env.REACT_APP_SOCKET_URL);
+import { socket } from "../socket";
 
 function Game() {
   const { state } = useLocation();
