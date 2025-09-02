@@ -33,12 +33,6 @@ function JoinLobby() {
       lobbyName: normalizedLobbyName,
       username: normalizedUsername,
     });
-
-    socket.once("lobbyUpdate", () => {
-      navigate("/game", {
-        state: { lobbyName: normalizedLobbyName, username },
-      });
-    });
   };
 
   return (
