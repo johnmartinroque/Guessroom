@@ -76,8 +76,9 @@ io.on("connection", (socket) => {
     lobbies[lobbyName].scores[username] = 0;
 
     socketUserMap[socket.id] = { lobbyName, username };
+    console.log(`👥 Lobby [${lobbyName}] Users:`, lobbies[lobbyName].users);
 
-    io.in(lobbyName).emit("lobbyUpdate", {
+    io.to(lobbyName).emit("lobbyUpdate", {
       users: lobbies[lobbyName].users,
       scores: lobbies[lobbyName].scores,
     });
@@ -153,18 +154,13 @@ io.on("connection", (socket) => {
     }
   });
 
+  // Handle guesses
   socket.on("submitAnswer", ({ lobbyName, username, answer }) => {
     if (lobbies[lobbyName] && lobbies[lobbyName].currentSong) {
-      const { artist } = lobbies[lobbyName].currentSong;
+      const correctArtist = lobbies[lobbyName].currentSong.artist.toLowerCase();
       const guess = answer.trim().toLowerCase();
 
-      const acceptableAnswers = Array.isArray(artist)
-        ? artist.map((a) => a.trim().toLowerCase())
-        : [artist.trim().toLowerCase()];
-
-      const isCorrect = acceptableAnswers.includes(guess);
-
-      if (isCorrect) {
+      if (guess === correctArtist) {
         if (!lobbies[lobbyName].guessed.includes(username)) {
           lobbies[lobbyName].guessed.push(username);
           lobbies[lobbyName].scores[username] += 1;
@@ -176,7 +172,7 @@ io.on("connection", (socket) => {
           scores: lobbies[lobbyName].scores,
         });
 
-        // All users guessed? Next round.
+        // If all users guessed correctly → next round
         if (
           lobbies[lobbyName].guessed.length === lobbies[lobbyName].users.length
         ) {

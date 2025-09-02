@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import LobbyList from "../components/LobbyList";
-import { socket } from "../socket";
+
+const socket = io(process.env.REACT_APP_SOCKET_URL);
 
 function JoinLobby() {
   const [username, setUsername] = useState("");
@@ -33,9 +34,9 @@ function JoinLobby() {
       username: normalizedUsername,
     });
 
-    socket.on("lobbyUpdate", () => {
+    socket.once("lobbyUpdate", () => {
       navigate("/game", {
-        state: { lobbyName: normalizedLobbyName, username: normalizedUsername },
+        state: { lobbyName: normalizedLobbyName, username },
       });
     });
   };

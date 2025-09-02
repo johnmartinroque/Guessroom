@@ -3,7 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import ChatFinished from "../components/ChatFinished";
 import ChatOnGoing from "../components/ChatOnGoing";
-import { socket } from "../socket";
+
+const socket = io(process.env.REACT_APP_SOCKET_URL);
 
 function Game() {
   const { state } = useLocation();
@@ -36,27 +37,30 @@ function Game() {
       setGuessedUsers(guessedUsers || []);
     });
 
-   socket.on("musicUpdate", ({ title, albumArt, filename, action, round, artist }) => {
-  setRound(round || 0);
+    socket.on(
+      "musicUpdate",
+      ({ title, albumArt, filename, action, round, artist }) => {
+        setRound(round || 0);
 
-      if (action === "play") {
-        setCurrentSong({
-          title,
-          albumArt,
-          filename,
-          artist: Array.isArray(artist) ? artist : [artist], // Always an array
-        });
-        setGuessedUsers([]);
-        setFeedback([]);
-        setHasGuessedCorrectly(false);
-        audioRef.current.src = `${process.env.REACT_APP_SOCKET_URL}/music/${filename}`;
-        audioRef.current.play().catch((err) => console.log(err));
-      } else if (action === "stop") {
-        setCurrentSong(null);
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
+        if (action === "play") {
+          setCurrentSong({
+            title,
+            albumArt,
+            filename,
+            artist: Array.isArray(artist) ? artist : [artist], // Always an array
+          });
+          setGuessedUsers([]);
+          setFeedback([]);
+          setHasGuessedCorrectly(false);
+          audioRef.current.src = `${process.env.REACT_APP_SOCKET_URL}/music/${filename}`;
+          audioRef.current.play().catch((err) => console.log(err));
+        } else if (action === "stop") {
+          setCurrentSong(null);
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }
       }
-    });
+    );
 
     socket.on("skipUpdate", ({ skipVotes, totalUsers }) => {
       setFeedback((prev) => [
