@@ -26,6 +26,12 @@ function JoinLobby() {
     window.location.reload();
   };
 
+  const playClickSound = () => {
+    const audio = new Audio("/effects/click.mp3");
+    audio.volume = 1;
+    audio.play().catch((err) => console.error(err));
+  };
+
   const joinLobby = () => {
     if (!username || !lobbyName) return;
 
@@ -39,10 +45,20 @@ function JoinLobby() {
     });
 
     socket.on("lobbyUpdate", () => {
-      navigate("/game", {
-        state: { lobbyName: normalizedLobbyName, username: normalizedUsername },
-      });
-      refresh();
+      const audio = new Audio("/effects/click.mp3");
+      audio.volume = 1;
+      audio.play().catch((err) => console.error(err));
+
+      // Wait for sound to finish (or short delay)
+      setTimeout(() => {
+        navigate("/game", {
+          state: {
+            lobbyName: normalizedLobbyName,
+            username: normalizedUsername,
+          },
+        });
+        // refresh(); // optional: consider removing reload
+      }, 150); // 150ms is usually enough for a short click sound
     });
   };
 
@@ -68,7 +84,13 @@ function JoinLobby() {
         onChange={(e) => setUsername(e.target.value.slice(0, 20))} // allow any capitalization here
         className="retro-input mt-3"
       />
-      <button onClick={joinLobby} className="retro-button mt-5">
+      <button
+        onClick={() => {
+          playClickSound();
+          joinLobby();
+        }}
+        className="retro-button mt-5"
+      >
         Create or Join Lobby
       </button>
 
