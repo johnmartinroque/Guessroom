@@ -48,8 +48,7 @@ io.on("connection", (socket) => {
   });
 
   // Join a lobby
-  // Join a lobby
-  socket.on("joinLobby", ({ lobbyName, username }, callback) => {
+  socket.on("joinLobby", ({ lobbyName, username }) => {
     socket.join(lobbyName);
 
     if (!lobbies[lobbyName]) {
@@ -65,11 +64,9 @@ io.on("connection", (socket) => {
     }
 
     if (lobbies[lobbyName].users.includes(username)) {
-      if (callback)
-        callback({
-          success: false,
-          message: "Username already taken in this lobby!",
-        });
+      socket.emit("joinError", {
+        message: "Username already taken in this lobby!",
+      });
       return;
     }
 
@@ -79,23 +76,14 @@ io.on("connection", (socket) => {
     socketUserMap[socket.id] = { lobbyName, username };
     console.log(`👥 Lobby [${lobbyName}] Users:`, lobbies[lobbyName].users);
 
-    // Emit lobby update to all clients in the lobby
     io.to(lobbyName).emit("lobbyUpdate", {
       users: lobbies[lobbyName].users,
       scores: lobbies[lobbyName].scores,
     });
 
-    // Broadcast updated lobby list to everyone
-    function broadcastLobbies() {
-      const lobbyList = Object.keys(lobbies).map((ln) => ({
-        lobbyName: ln,
-        users: lobbies[ln].users,
-      }));
-      io.emit("lobbyList", lobbyList);
-    }
+    // 🔹 Now broadcast updated lobby list to all
     broadcastLobbies();
 
-    // If a song is already playing, send it to this user
     if (lobbies[lobbyName].currentSong) {
       socket.emit("musicUpdate", {
         ...lobbies[lobbyName].currentSong,
@@ -103,9 +91,6 @@ io.on("connection", (socket) => {
         action: "play",
       });
     }
-
-    // ✅ Call the frontend callback to confirm join success
-    if (callback) callback({ success: true });
   });
 
   // Leave a lobby

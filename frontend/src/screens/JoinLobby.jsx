@@ -18,31 +18,27 @@ function JoinLobby() {
 
     return () => {
       socket.off("joinError");
+      socket.off("lobbyUpdate");
     };
   }, []);
 
   const joinLobby = () => {
     if (!username || !lobbyName) return;
 
+    // Normalize inputs before emitting
     const normalizedLobbyName = lobbyName.toLowerCase();
     const normalizedUsername = username.toLowerCase();
 
-    socket.emit(
-      "joinLobby",
-      { lobbyName: normalizedLobbyName, username: normalizedUsername },
-      (response) => {
-        if (response.success) {
-          navigate("/game", {
-            state: {
-              lobbyName: normalizedLobbyName,
-              username: normalizedUsername,
-            },
-          });
-        } else {
-          setError(response.message);
-        }
-      }
-    );
+    socket.emit("joinLobby", {
+      lobbyName: normalizedLobbyName,
+      username: normalizedUsername,
+    });
+
+    socket.on("lobbyUpdate", () => {
+      navigate("/game", {
+        state: { lobbyName: normalizedLobbyName, username: normalizedUsername },
+      });
+    });
   };
 
   return (
