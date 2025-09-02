@@ -22,16 +22,21 @@ function Game() {
   const [hasGuessedCorrectly, setHasGuessedCorrectly] = useState(false);
   const audioRef = useRef(null);
   const feedbackRef = useRef(null);
-  const [volume, setVolume] = useState(100); // volume as 0-100 for slider
 
-  // Update audio volume whenever `volume` state changes
+  const [volume, setVolume] = useState(() => {
+    const saved = localStorage.getItem("volume");
+    return saved !== null ? Number(saved) : 100;
+  });
+
+  // Apply volume globally to all audio elements
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume / 100; // convert 0-100 to 0.0-1.0
-    }
+    const allAudio = document.querySelectorAll("audio");
+    allAudio.forEach((audio) => {
+      audio.volume = volume / 100;
+    });
+    localStorage.setItem("volume", volume);
   }, [volume]);
 
-  // Set CSS variable for slider fill on volume change
   useEffect(() => {
     const slider = document.getElementById("volume-slider");
     if (slider) {
@@ -70,11 +75,17 @@ function Game() {
           setHasGuessedCorrectly(false);
 
           if (audioRef.current) {
-            audioRef.current.src = `${process.env.REACT_APP_SOCKET_URL}/music/${filename}`;
-            audioRef.current.volume = volume / 100;
-            audioRef.current
-              .play()
-              .catch((err) => console.log("Audio play error:", err));
+            const audio = audioRef.current;
+            audio.pause();
+            audio.src = `${process.env.REACT_APP_SOCKET_URL}/music/${filename}`;
+            audio.load();
+
+            audio.oncanplaythrough = () => {
+              audio.volume = volume / 100;
+              audio
+                .play()
+                .catch((err) => console.error("Audio play error:", err));
+            };
           }
         } else if (action === "stop") {
           setCurrentSong(null);
@@ -94,7 +105,6 @@ function Game() {
     });
 
     socket.on("correctAnswer", ({ username: user, scores }) => {
-      console.log("Correct answer event received:", user);
       setScores(scores);
       setGuessedUsers((prev) => [...prev, user]);
       if (user === username) {
@@ -106,7 +116,6 @@ function Game() {
     });
 
     socket.on("wrongAnswer", ({ answer }) => {
-      console.log("Wrong answer event received:", answer);
       setFeedback((prev) => [...prev, `❌ Wrong guess: ${answer}`]);
     });
 
@@ -130,7 +139,7 @@ function Game() {
       socket.off("skipUpdate");
       socket.off("gameFinished");
     };
-  }, [lobbyName, username, navigate]); // <--- no volume here!
+  }, [lobbyName, username, navigate, volume]);
 
   useEffect(() => {
     if (feedbackRef.current) {
@@ -140,7 +149,6 @@ function Game() {
 
   const submitAnswer = (e) => {
     e.preventDefault();
-    console.log("Submitting answer:", answer, "hasGuessedCorrectly:", hasGuessedCorrectly);
     if (!answer.trim() || hasGuessedCorrectly) return;
     socket.emit("submitAnswer", { lobbyName, username, answer });
     setAnswer("");
@@ -175,7 +183,7 @@ function Game() {
             </li>
           ))}
         </ul>
-        {/* 🔊 Volume Rocker */}
+
         <div className="mt-4 w-100">
           <label
             className="retro-glitch-text d-block mb-1 text-start"
@@ -193,6 +201,7 @@ function Game() {
             style={{ "--volume-percent": `${volume}%` }}
           />
         </div>
+
         <button onClick={leaveLobby} className="retro-button mt-3 w-100">
           Leave Lobby
         </button>
@@ -206,8 +215,7 @@ function Game() {
         {currentSong ? (
           <div className="d-flex flex-column align-items-center">
             <p className="retro-glitch-text">
-              Now Playing: {currentSong.title} by ???{" "}
-              {/* You can reveal artist name if needed */}
+              Now Playing: {currentSong.title} by ???
             </p>
             <img
               src={currentSong.albumArt}
