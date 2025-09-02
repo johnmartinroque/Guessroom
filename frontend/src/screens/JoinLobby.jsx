@@ -38,6 +38,10 @@ function JoinLobby() {
       navigate("/game", {
         state: { lobbyName: normalizedLobbyName, username: normalizedUsername },
       });
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
     });
   };
 
