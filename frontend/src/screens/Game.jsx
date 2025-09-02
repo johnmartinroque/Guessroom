@@ -149,7 +149,7 @@ function Game() {
             </li>
           ))}
         </ul>
-        <LobbyUsers lobbyName={lobbyName} />
+        <LobbyUsers users={users} scores={scores} />
         <button onClick={leaveLobby} className="retro-button mt-3 w-100">
           Leave Lobby
         </button>
