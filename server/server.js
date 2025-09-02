@@ -77,7 +77,7 @@ io.on("connection", (socket) => {
 
     socketUserMap[socket.id] = { lobbyName, username };
 
-    io.to(lobbyName).emit("lobbyUpdate", {
+    io.in(lobbyName).emit("lobbyUpdate", {
       users: lobbies[lobbyName].users,
       scores: lobbies[lobbyName].scores,
     });
@@ -153,42 +153,40 @@ io.on("connection", (socket) => {
     }
   });
 
-socket.on("submitAnswer", ({ lobbyName, username, answer }) => {
-  if (lobbies[lobbyName] && lobbies[lobbyName].currentSong) {
-    const { artist } = lobbies[lobbyName].currentSong;
-    const guess = answer.trim().toLowerCase();
+  socket.on("submitAnswer", ({ lobbyName, username, answer }) => {
+    if (lobbies[lobbyName] && lobbies[lobbyName].currentSong) {
+      const { artist } = lobbies[lobbyName].currentSong;
+      const guess = answer.trim().toLowerCase();
 
-    const acceptableAnswers = Array.isArray(artist)
-      ? artist.map((a) => a.trim().toLowerCase())
-      : [artist.trim().toLowerCase()];
+      const acceptableAnswers = Array.isArray(artist)
+        ? artist.map((a) => a.trim().toLowerCase())
+        : [artist.trim().toLowerCase()];
 
-    const isCorrect = acceptableAnswers.includes(guess);
+      const isCorrect = acceptableAnswers.includes(guess);
 
-    if (isCorrect) {
-      if (!lobbies[lobbyName].guessed.includes(username)) {
-        lobbies[lobbyName].guessed.push(username);
-        lobbies[lobbyName].scores[username] += 1;
+      if (isCorrect) {
+        if (!lobbies[lobbyName].guessed.includes(username)) {
+          lobbies[lobbyName].guessed.push(username);
+          lobbies[lobbyName].scores[username] += 1;
+        }
+
+        io.to(lobbyName).emit("correctAnswer", {
+          username,
+          answer,
+          scores: lobbies[lobbyName].scores,
+        });
+
+        // All users guessed? Next round.
+        if (
+          lobbies[lobbyName].guessed.length === lobbies[lobbyName].users.length
+        ) {
+          nextRound(lobbyName);
+        }
+      } else {
+        socket.emit("wrongAnswer", { answer });
       }
-
-      io.to(lobbyName).emit("correctAnswer", {
-        username,
-        answer,
-        scores: lobbies[lobbyName].scores,
-      });
-
-      // All users guessed? Next round.
-      if (
-        lobbies[lobbyName].guessed.length ===
-        lobbies[lobbyName].users.length
-      ) {
-        nextRound(lobbyName);
-      }
-    } else {
-      socket.emit("wrongAnswer", { answer });
     }
-  }
-});
-
+  });
 
   function playRandomSong(lobbyName) {
     const lobby = lobbies[lobbyName];
