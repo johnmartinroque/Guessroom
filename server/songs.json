@@ -77,11 +77,106 @@
     "artist": "Nirvana",
     "albumArt": "https://i.scdn.co/image/ab6761610000e5eb49799010fa77f1f862ab207e"
   },
-
+  {
+    "filename": "song14.mp3",
+    "title": "My Love Mine All Mine",
+    "artist": "Mitski",
+    "albumArt": "https://nationaltoday.com/wp-content/uploads/2022/10/456841225-min-1200x834.jpg"
+  },
+  {
+    "filename": "song15.mp3",
+    "title": "Another One Bites the Dust",
+    "artist": "Queen",
+    "albumArt": "https://m.media-amazon.com/images/M/MV5BMjI4OTIwNDAxMF5BMl5BanBnXkFtZTgwOTkzOTAyODE@._V1_.jpg"
+  },
+  {
+    "filename": "song16.mp3",
+    "title": "Iris",
+    "artist": "Goo Goo Dolls",
+    "albumArt": "https://i.scdn.co/image/ab6761610000e5ebe7b66b8c4ba729848574df7a"
+  },
+  {
+    "filename": "song17.mp3",
+    "title": "Boulevard of Broken Dreams",
+    "artist": ["Green Day", "greenday"],
+    "albumArt": "https://i.scdn.co/image/ab676161000051746ff0cd5ef2ecf733804984bb"
+  },
+  {
+    "filename": "song18.mp3",
+    "title": "Dancing Queen",
+    "artist": "ABBA",
+    "albumArt": "https://i.scdn.co/image/ab6761610000e5eb81a5ec3c9b4a6750440904d8"
+  },
+  {
+    "filename": "song19.mp3",
+    "title": "See You Again",
+    "artist": ["Tyler", "Tyler, the Creator", "Tyler the creator", "Kali Uchis"],
+    "albumArt": "https://cdn-images.dzcdn.net/images/cover/a7a16b8f63b1ec0e9fbd327619966737/1900x1900-000000-80-0-0.jpg"
+  },
+  {
+    "filename": "song20.mp3",
+    "title": "It Was a Good Day",
+    "artist": "Ice Cube",
+    "albumArt": "https://cdn.britannica.com/14/198514-050-72C159BB/Ice-Cube-2015.jpg"
+  },
+  {
+    "filename": "song21.mp3",
+    "title": "Until I Found You",
+    "artist": "Stephen Sanchez",
+    "albumArt": "https://i.scdn.co/image/ab6761610000e5eb1e97fce6fa6fc4ebc3ebda25"
+  },
+  {
+    "filename": "song22.mp3",
+    "title": "NISSAN ALTIMA",
+    "artist": "Doechii",
+    "albumArt": "https://i.scdn.co/image/ab6761610000e5ebca2fee52c41d3f58ceb6474b"
+  },
+  {
+    "filename": "song23.mp3",
+    "title": "Bad Habit",
+    "artist": "Steve Lacy",
+    "albumArt": "https://i.scdn.co/image/ab676161000051742297f6d794be503fc5fd031f"
+  },
+  {
+    "filename": "song24.mp3",
+    "title": "Superpowers",
+    "artist": "Daniel Caesar",
+    "albumArt": "https://imageio.forbes.com/blogs-images/ogdenpayne/files/2017/02/Daniel-Caesar-NEw-by-Keith-Henry.jpg?format=jpg&height=600&width=1200&fit=bounds"
+  },
   {
     "filename": "song25.mp3",
     "title": "Creep",
     "artist": "Radiohead",
     "albumArt": "https://images.genius.com/486b67f44fbb8bf0c4ce4e7d502a466d.829x793x1.png"
+  },
+  {
+    "filename": "song26.mp3",
+    "title": "Pink + White",
+    "artist": "Frank Ocean",
+    "albumArt": "https://i.pinimg.com/750x/90/51/d6/9051d663892e3c657de4b50e3b121984.jpg"
+  },
+  {
+    "filename": "song27.mp3",
+    "title": "Violent Crimes",
+    "artist": ["Kanye", "Kanye West", "Ye"],
+    "albumArt": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Kanye_West_at_the_2009_Tribeca_Film_Festival_%28crop_2%29.jpg"
+  },
+  {
+    "filename": "song28.mp3",
+    "title": "Redbone",
+    "artist": ["Donald Glover", "Gambino", "Childish Gambino"],
+    "albumArt": "https://i1.sndcdn.com/avatars-EJ9GGrkQ9typ3a0d-v74n4Q-t1080x1080.jpg"
+  },
+  {
+    "filename": "song29.mp3",
+    "title": "No Role Modelz",
+    "artist": ["Cole", "J.Cole", "J. Cole", "J Cole", "Jcole"],
+    "albumArt": "https://magazine.weverse.io/upload/img/202304/20230405DF9cc46.png"
+  },
+  {
+    "filename": "song30.mp3",
+    "title": "My Way",
+    "artist": "Frank Sinatra",
+    "albumArt": "https://d3i6fh83elv35t.cloudfront.net/newshour/app/uploads/2015/12/GettyImages-85339538-1024x889.jpg"
   }
 ]
