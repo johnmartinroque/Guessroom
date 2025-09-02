@@ -164,7 +164,7 @@ function Game() {
               alt={currentSong.title}
               style={{
                 height: "300px",
-                width: "auto",
+                width: "300px",
                 objectFit: "cover",
                 objectPosition: "center",
                 display: "block",
