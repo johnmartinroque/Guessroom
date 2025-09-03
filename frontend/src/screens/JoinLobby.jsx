@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import LobbyList from "../components/LobbyList";
@@ -9,11 +9,14 @@ function JoinLobby() {
   const [username, setUsername] = useState("");
   const [lobbyName, setLobbyName] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showWakeMessage, setShowWakeMessage] = useState(false);
   const navigate = useNavigate();
-
+  const wakeTimeoutRef = useRef(null);
   useEffect(() => {
     socket.on("joinError", ({ message }) => {
       setError(message);
+      setLoading(false);
     });
 
     return () => {
@@ -35,6 +38,13 @@ function JoinLobby() {
   const joinLobby = () => {
     if (!username || !lobbyName) return;
 
+    setLoading(true);
+
+    // ⏱ only show wake message if still loading after 3 seconds
+    wakeTimeoutRef.current = setTimeout(() => {
+      setShowWakeMessage(true);
+    }, 3000);
+
     // Normalize inputs before emitting
     const normalizedLobbyName = lobbyName.toLowerCase();
     const normalizedUsername = username.toLowerCase();
@@ -44,6 +54,8 @@ function JoinLobby() {
       username: normalizedUsername,
     });
 
+    setLoading(true);
+
     socket.on("lobbyUpdate", () => {
       const audio = new Audio("/effects/click.mp3");
       audio.volume = 1;
@@ -51,14 +63,16 @@ function JoinLobby() {
 
       // Wait for sound to finish (or short delay)
       setTimeout(() => {
+        setLoading(false);
+        setShowWakeMessage(false);
         navigate("/game", {
           state: {
             lobbyName: normalizedLobbyName,
             username: normalizedUsername,
           },
         });
-        // refresh(); // optional: consider removing reload
-      }, 150); // 150ms is usually enough for a short click sound
+        refresh();
+      }, 150);
     });
   };
 
@@ -90,9 +104,16 @@ function JoinLobby() {
           joinLobby();
         }}
         className="retro-button mt-5"
+        disabled={loading} // disable button while loading
       >
-        Create or Join Lobby
+        {loading ? "Connecting..." : "Create or Join Lobby"}
       </button>
+      {/* Only show this if wake message is triggered */}
+      {showWakeMessage && (
+        <p className="text-info mt-3">
+          The server may be waking up, this can take a few seconds...
+        </p>
+      )}
 
       {error && <p className="text-danger mt-2">{error}</p>}
       <LobbyList username={username} navigate={navigate} />
