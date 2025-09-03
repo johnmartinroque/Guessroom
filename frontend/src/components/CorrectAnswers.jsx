@@ -8,7 +8,7 @@ function CorrectAnswers({ correctAnswers }) {
   return (
     <div className="mt-4">
       <h2 className="retro-glitch-text">Correct Answers</h2>
-      <div className="d-flex flex-wrap justify-content-center gap-3">
+      <div className="d-flex flex-wrap justify-content-center gap-5">
         {correctAnswers.map((song, idx) => (
           <div
             key={idx}

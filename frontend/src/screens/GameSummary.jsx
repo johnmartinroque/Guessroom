@@ -15,6 +15,12 @@ function GameSummary() {
     return null;
   }
 
+  const playClickSound = () => {
+    const audio = new Audio("/effects/click.mp3");
+    audio.volume = 1;
+    audio.play().catch((err) => console.error(err));
+  };
+
   return (
     <div className="container text-center">
       <h1 className="mb-3 retro-glitch-title">Game Summary - {lobbyName}</h1>
@@ -29,7 +35,12 @@ function GameSummary() {
       <CorrectAnswers correctAnswers={correctAnswers} />
       <button
         className="retro-button mt-3"
-        onClick={() => navigate("/game", { state: { lobbyName, username } })}
+        onClick={() => {
+          playClickSound();
+          setTimeout(() => {
+            navigate("/game", { state: { lobbyName, username } });
+          }, 150); // small delay so click sound plays
+        }}
       >
         Back to Lobby
       </button>
