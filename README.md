@@ -4,9 +4,9 @@ A real-time multiplayer music guessing game built with **Node.js**, **Express**,
 
 ---
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/ebe3b21d-6b60-4d28-99e5-6f45a02e3fd9" width="300" />
-  <img src="https://github.com/user-attachments/assets/86613f80-9d6c-4e6b-a725-f01d013754e3" width="300" />
-  <img src="https://github.com/user-attachments/assets/f39b1f79-cd07-4e21-ab58-ba3e16cc57e6" width="300" />
+  <img src="https://github.com/user-attachments/assets/ebe3b21d-6b60-4d28-99e5-6f45a02e3fd9" style="max-width: 30%; height: auto;" />
+  <img src="https://github.com/user-attachments/assets/86613f80-9d6c-4e6b-a725-f01d013754e3" style="max-width: 30%; height: auto;" />
+  <img src="https://github.com/user-attachments/assets/f39b1f79-cd07-4e21-ab58-ba3e16cc57e6" style="max-width: 30%; height: auto;" />
 </p>
 ---
 
