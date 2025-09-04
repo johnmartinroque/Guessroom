@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import JoinLobby from "./screens/JoinLobby";
 import Game from "./screens/Game";
 import GameSummary from "./screens/GameSummary";
@@ -22,6 +27,7 @@ function App() {
               <Route path="/" element={<JoinLobby />} />
               <Route path="/game" element={<Game />} />
               <Route path="/gamesummary" element={<GameSummary />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Router>
         </div>
