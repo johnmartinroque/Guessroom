@@ -48,4 +48,46 @@ A real-time multiplayer music guessing game built with **Node.js**, **Express**,
 - **Music Hosting:** Static files served via Express
 - **State Management:** In-memory per lobby
 
+---
 
+
+## 🏃 How to Run
+### Installation
+1️⃣ Clone the repository
+```bash
+git clone https://github.com/johnmartinroque/Guessroom.git
+cd Guessroom
+```
+
+2️⃣ Install dependencies
+```bash
+#Backend (server)
+cd server
+npm install
+
+#Frontend (React app)
+cd ../frontend
+npm install
+```
+
+3️⃣ Configure environment variables
+```bash
+#Inside the frontend folder, create a .env file:
+#REACT_APP_SOCKET_URL=http://127.0.0.1:5000
+#Use 127.0.0.1 (or localhost) if you’re only playing on your own machine.
+#Use your local IP address if you want friends on the same WiFi to join:
+#REACT_APP_SOCKET_URL=http://192.168.x.x:5000
+```
+
+
+4️⃣ Start the backend (server)
+```bash
+#From the server folder:
+npm run dev
+```
+
+5️⃣ Start the frontend (React app)
+```bash
+#From the server folder:
+npm start
+```
