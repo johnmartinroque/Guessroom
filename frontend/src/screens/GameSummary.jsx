@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import CorrectAnswers from "../components/CorrectAnswers";
 
@@ -10,16 +10,26 @@ function GameSummary() {
     correctAnswers: [],
   };
 
-  if (!state) {
-    navigate("/join");
-    return null;
-  }
+  useEffect(() => {
+    if (!state) {
+      navigate("/join");
+      return;
+    }
+
+    const audio = new Audio("/effects/gamesummary.mp3");
+    audio.volume = 0.6;
+    audio.play().catch((err) => console.error("Autoplay blocked:", err));
+  }, [state, navigate]);
 
   const playClickSound = () => {
     const audio = new Audio("/effects/click.mp3");
     audio.volume = 1;
     audio.play().catch((err) => console.error(err));
   };
+
+  if (!state) {
+    return null; // safe because navigate already handled redirect
+  }
 
   return (
     <div className="container text-center">
