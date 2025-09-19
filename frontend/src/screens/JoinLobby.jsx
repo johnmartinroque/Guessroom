@@ -108,9 +108,9 @@ function JoinLobby() {
       >
         {loading ? "Connecting..." : "Create or Join Lobby"}
       </button>
-      {/* Only show this if wake message is triggered */}
+
       {showWakeMessage && (
-        <p className="text-info mt-3">
+        <p className="retro-glitch-text retro-glitch-text-info mt-3 flicker">
           The server may be waking up, this can take a few seconds...
         </p>
       )}
