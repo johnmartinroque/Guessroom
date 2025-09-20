@@ -20,6 +20,10 @@ app.use(cors());
 // Serve static music files
 app.use("/music", express.static(path.join(__dirname, "music")));
 
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {

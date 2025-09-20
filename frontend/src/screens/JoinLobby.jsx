@@ -35,7 +35,18 @@ function JoinLobby() {
     audio.play().catch((err) => console.error(err));
   };
 
-  const joinLobby = () => {
+  const wakeServer = async () => {
+    try {
+      await fetch(process.env.REACT_APP_SOCKET_URL + "/health", {
+        method: "GET",
+      });
+      console.log("✅ Server wake ping sent");
+    } catch (err) {
+      console.error("Wake-up fetch failed:", err);
+    }
+  };
+
+  const joinLobby = async () => {
     if (!username || !lobbyName) return;
 
     setLoading(true);
@@ -44,6 +55,8 @@ function JoinLobby() {
     wakeTimeoutRef.current = setTimeout(() => {
       setShowWakeMessage(true);
     }, 3000);
+
+    await wakeServer();
 
     // Normalize inputs before emitting
     const normalizedLobbyName = lobbyName.toLowerCase();
